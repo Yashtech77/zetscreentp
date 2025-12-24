@@ -1,41 +1,56 @@
+import buildingImg from '../assets/building.jpeg'
+import bedroomImg from '../assets/3bedroom.jpeg'
+import balconyImg from '../assets/balcony.jpeg'
+import bedroomImg2 from '../assets/2bedroom.jpeg'
+import liftImg from '../assets/lift.jpeg'
+import bedwashroomImg from '../assets/2bedwithbath.jpeg'
+
 function Gallery() {
   const images = [
     {
       id: 1,
-      category: 'room',
-      title: 'Cozy Bedroom',
-      image: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80'
+      category: 'exterior',
+      title: 'Building View',
+      image: buildingImg,
+      featured: true
     },
     {
       id: 2,
       category: 'room',
-      title: 'Study Area',
-      image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=600&q=80'
+      title: '3 Bed Room',
+      image: bedroomImg,
+      featured: true
     },
     {
       id: 3,
-      category: 'common',
-      title: 'Common Area',
-      image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80'
+      category: 'room',
+      title: '2 Bed Room',
+      image: bedroomImg2,
+      featured: true
     },
+
     {
       id: 4,
-      category: 'washroom',
-      title: 'Modern Washroom',
-      image: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=600&q=80'
+      category: 'room',
+      title: 'Bed Room with Washroom',
+      image: bedwashroomImg,
+      featured: true
     },
     {
       id: 5,
       category: 'room',
-      title: 'Twin Sharing Room',
-      image: 'https://images.unsplash.com/photo-1595526114035-0d45ed16cfbf?w=600&q=80'
+      title: ' Lift Facility',
+      image: liftImg,
+      featured: true
     },
     {
       id: 6,
-      category: 'exterior',
-      title: 'Building View',
-      image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=600&q=80'
+      category: 'room',
+      title: 'Balcony View',
+      image: balconyImg,
+      featured: true
     },
+
   ]
 
   return (

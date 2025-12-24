@@ -1,5 +1,5 @@
 function Location() {
-  const phoneNumber = '917070547532'
+  const phoneNumber = '919175916383'
 
   const branches = [
     { name: 'Akurdi (Main)', address: 'Swapnanagri Society, Akurdi, Pune - 411035' },
@@ -69,7 +69,7 @@ function Location() {
               </div>
               <div>
                 <h4>Phone</h4>
-                <p>+91 70705 47532</p>
+                <p>+91 91759 16383</p>
               </div>
             </div>
 

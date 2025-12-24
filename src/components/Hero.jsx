@@ -1,5 +1,6 @@
+import buildingImg from '../assets/building.jpeg'
 function Hero() {
-  const phoneNumber = '917070547532'
+  const phoneNumber = '919175916383'
 
   const handleBookVisit = () => {
     const message = `Hi, I'd like to schedule a visit to Gurbaani Living PG. Please let me know the available timings.`
@@ -74,8 +75,8 @@ function Hero() {
         <div className="hero-visual">
           <div className="hero-main-image">
             <img
-              src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=700&q=80"
-              alt="Modern PG Room"
+              src={buildingImg}
+              alt="Gurbaani Living Building"
             />
           </div>
 

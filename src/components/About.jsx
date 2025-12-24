@@ -1,5 +1,5 @@
 function About() {
-  const phoneNumber = '917070547532'
+  const phoneNumber = '919175916383'
 
   const amenities = [
     { icon: '🛏️', title: 'Furnished Rooms', desc: 'Fully furnished with premium bedding' },
@@ -7,7 +7,10 @@ function About() {
     { icon: '🧹', title: 'Housekeeping', desc: 'Daily cleaning and maintenance' },
     { icon: '🔒', title: '24/7 Security', desc: 'CCTV surveillance and secure access' },
     { icon: '🚿', title: 'Hot Water', desc: 'Geyser facility with 24/7 hot water' },
-    { icon: '⚡', title: 'Power Backup', desc: 'Uninterrupted power supply' },
+    { icon: '🧺', title: 'Washing Machine', desc: 'Common washing machine facility' },
+    { icon: '💧', title: 'RO Water', desc: 'Pure RO drinking water available' },
+    { icon: '❄️', title: 'Refrigerator', desc: 'Common fridge for residents' },
+    { icon: '🍳', title: 'Induction', desc: 'Induction available for cooking' },
   ]
 
   const stats = [
@@ -71,7 +74,7 @@ function About() {
               </div>
               <div className="contact-item">
                 <span className="contact-icon">📞</span>
-                <span>+91 70705 47532</span>
+                <span>+91 91759 16383</span>
               </div>
             </div>
             <button onClick={handleWhatsApp} className="btn btn-whatsapp">
