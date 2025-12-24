@@ -58,7 +58,7 @@ function Testimonials() {
     <section id="testimonials" className="testimonials">
       <div className="container">
         <div className="section-header">
-          <span className="section-tag">Testimonials</span>
+           
           <h2 className="section-title">What Our Residents Say</h2>
           <p className="section-subtitle">
             Don't just take our word for it. Here's what our happy residents have to say about their experience at Gurbaani Living.

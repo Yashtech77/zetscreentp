@@ -14,7 +14,7 @@ function About() {
   ]
 
   const stats = [
-    { number: '50+', label: 'Happy Residents' },
+    { number: '2000+', label: 'Happy Residents' },
     { number: '5+', label: 'Years Experience' },
     { number: '24/7', label: 'Support Available' },
     { number: '100%', label: 'Satisfaction Rate' },

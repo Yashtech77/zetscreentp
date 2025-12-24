@@ -1,5 +1,8 @@
+import { useState } from 'react'
+
 function Rooms() {
   const phoneNumber = '919175916383'
+  const [selectedRoom, setSelectedRoom] = useState(null)
 
   const rooms = [
     {
@@ -71,7 +74,9 @@ function Rooms() {
           {rooms.map((room, index) => (
             <div
               key={index}
-              className={`room-card ${room.popular ? 'room-card--popular' : ''}`}
+              className={`room-card ${room.popular ? 'room-card--popular' : ''} ${selectedRoom === index ? 'room-card--selected' : ''}`}
+              onClick={() => setSelectedRoom(selectedRoom === index ? null : index)}
+              style={{ cursor: 'pointer' }}
             >
               {room.popular && <span className="room-badge">Most Popular</span>}
               <h3 className="room-type">{room.type}</h3>
@@ -100,12 +105,21 @@ function Rooms() {
                   </li>
                 ))}
               </ul>
-              <button
-                onClick={() => handleBooking(room.type)}
-                className={`btn ${room.popular ? 'btn-primary' : 'btn-secondary'}`}
-              >
-                Book on WhatsApp
-              </button>
+              {selectedRoom === index ? (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleBooking(room.type)
+                  }}
+                  className="btn btn-primary"
+                >
+                  Book on WhatsApp
+                </button>
+              ) : (
+                <button className="btn btn-secondary">
+                  Select Room
+                </button>
+              )}
             </div>
           ))}
         </div>

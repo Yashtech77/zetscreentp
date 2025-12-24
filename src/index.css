@@ -535,6 +535,17 @@ body {
   opacity: 1;
 }
 
+.room-card--selected {
+  border-color: var(--color-primary);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(96, 195, 173, 0.3);
+}
+
+.room-card--selected::before {
+  opacity: 1;
+  background: linear-gradient(180deg, rgba(96, 195, 173, 0.15) 0%, transparent 100%);
+}
+
 .room-badge {
   position: absolute;
   top: 16px;
