@@ -11,7 +11,7 @@ function Hero() {
   const features = [
     {
       title: 'For Students',
-      subtitle: 'Near colleges & universities',
+      subtitle: 'Near colleges ',
       image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&q=80'
     },
     {
