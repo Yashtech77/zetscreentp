@@ -2,7 +2,7 @@ import buildingImg from '../assets/building.jpeg'
 import bedroomImg from '../assets/3bedroom.jpeg'
 import balconyImg from '../assets/balcony.jpeg'
 import bedroomImg2 from '../assets/2bedroom.jpeg'
-import liftImg from '../assets/lift.jpeg'
+import liftImg from '../assets/Lift.jpeg'
 import bedwashroomImg from '../assets/2bedwithbath.jpeg'
 
 function Gallery() {
