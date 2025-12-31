@@ -21,6 +21,7 @@ const NewYearBanner = () => {
         <div className="new-year-text">
           <span className="new-year-wish">Happy New Year</span>
           <span className="new-year-number">2026</span>
+          <span className="new-year-offer">New Year Offer is Live!</span>
         </div>
         <span className="new-year-icon">🎊</span>
       </div>

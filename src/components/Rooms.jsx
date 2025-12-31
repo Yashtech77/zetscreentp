@@ -7,6 +7,7 @@ function Rooms() {
   const rooms = [
     {
       type: 'Triple Sharing',
+      originalPrice: '5,000',
       price: '4,500',
       period: '/month',
       features: [
@@ -22,6 +23,7 @@ function Rooms() {
     },
     {
       type: 'Double Sharing',
+      originalPrice: '5,500',
       price: '5,000',
       period: '/month',
       features: [
@@ -37,7 +39,8 @@ function Rooms() {
     },
     {
       type: 'Double with Attached Bath',
-      price: '6,500',
+      originalPrice: '6,500',
+      price: '6,000',
       period: '/month',
       features: [
         'Double sharing room',
@@ -81,9 +84,13 @@ function Rooms() {
               {room.popular && <span className="room-badge">Most Popular</span>}
               <h3 className="room-type">{room.type}</h3>
               <div className="room-price">
-                <span className="room-currency">₹</span>
-                <span className="room-amount">{room.price}</span>
-                <span className="room-period">{room.period}</span>
+                <div className="room-price-row">
+                  <span className="room-original-price">₹{room.originalPrice}</span>
+                  <span className="room-currency">₹</span>
+                  <span className="room-amount">{room.price}</span>
+                  <span className="room-period">{room.period}</span>
+                </div>
+                <span className="room-offer-tag mt-4 ">New Year Offer!</span>
               </div>
               <ul className="room-features">
                 {room.features.map((feature, i) => (

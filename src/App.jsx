@@ -1,4 +1,5 @@
 import Navbar from './components/Navbar'
+import NewYearBanner from './components/NewYearBanner'
 import Hero from './components/Hero'
 import Rooms from './components/Rooms'
 import Gallery from './components/Gallery'
@@ -13,6 +14,7 @@ function App() {
   return (
     <div className="app">
       <Navbar />
+      <NewYearBanner />
       <main>
         <Hero />
         <Rooms />

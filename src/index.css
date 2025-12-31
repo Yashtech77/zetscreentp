@@ -256,6 +256,8 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .new-year-wish {
@@ -274,6 +276,28 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
   animation: glow 2s ease-in-out infinite alternate;
+}
+
+.new-year-offer {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.15);
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-left: 10px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
 }
 
 @keyframes glow {
@@ -334,6 +358,12 @@ body {
     font-size: 1.1rem;
   }
 
+  .new-year-offer {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    margin-left: 6px;
+  }
+
   .new-year-content {
     gap: 10px;
   }
@@ -347,28 +377,36 @@ body {
 @media (max-width: 480px) {
   .new-year-banner {
     padding: 8px 12px;
-    padding-right: 44px;
+    padding-right: 40px;
   }
 
-  .new-year-icon:first-of-type {
+  .new-year-icon {
     display: none;
   }
 
   .new-year-text {
-    flex-direction: row;
-    gap: 6px;
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
   }
 
   .new-year-wish {
-    font-size: 0.75rem;
+    font-size: 0.8rem;
   }
 
   .new-year-number {
-    font-size: 0.9rem;
+    font-size: 1rem;
+  }
+
+  .new-year-offer {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    margin-left: 0;
+    margin-top: 2px;
   }
 
   .new-year-close {
-    right: 10px;
+    right: 8px;
     width: 24px;
     height: 24px;
     font-size: 1rem;
@@ -380,7 +418,7 @@ body {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  padding: 120px 24px 80px;
+  padding: 168px 24px 80px;
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
   position: relative;
   overflow: hidden;
@@ -777,11 +815,38 @@ body {
 
 .room-price {
   display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.room-price-row {
+  display: flex;
   align-items: baseline;
   gap: 4px;
-  margin-bottom: 28px;
-  padding-bottom: 28px;
-  border-bottom: 1px solid var(--color-border);
+}
+
+.room-original-price {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-decoration: line-through;
+  margin-right: 8px;
+}
+
+.room-offer-tag {
+  display: inline-block;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 6px 12px;
+  border-radius: var(--radius-lg);
+  animation: pulse 1.5s ease-in-out infinite;
 }
 
 .room-currency {
