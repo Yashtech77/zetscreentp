@@ -105,21 +105,15 @@ function Rooms() {
                   </li>
                 ))}
               </ul>
-              {selectedRoom === index ? (
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleBooking(room.type)
-                  }}
-                  className="btn btn-primary"
-                >
-                  Book on WhatsApp
-                </button>
-              ) : (
-                <button className="btn btn-secondary">
-                  Select Room
-                </button>
-              )}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation()
+                  handleBooking(room.type)
+                }}
+                className={`btn ${selectedRoom === index ? 'btn-book-selected' : 'btn-book-unselected'}`}
+              >
+                Book on WhatsApp
+              </button>
             </div>
           ))}
         </div>

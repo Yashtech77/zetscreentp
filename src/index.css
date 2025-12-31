@@ -118,7 +118,7 @@ body {
   background: var(--color-primary);
   border: none;
   cursor: pointer;
-  padding: 12px;
+  padding: 0;
   border-radius: 50%;
   width: 44px;
   height: 44px;
@@ -165,6 +165,214 @@ body {
 .hamburger.active::after {
   transform: rotate(-45deg);
   bottom: 0;
+}
+
+/* ==================== NEW YEAR BANNER ==================== */
+.new-year-banner {
+  position: fixed;
+  top: 72px;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  background: linear-gradient(135deg, #1a1a2e 0%, #4a1c40 30%, #1a1a2e 60%, #2d1f4a 100%);
+  padding: 12px 24px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.new-year-sparkles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.sparkle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: gold;
+  border-radius: 50%;
+  animation: sparkle-fall linear infinite;
+  opacity: 0;
+  box-shadow: 0 0 10px gold, 0 0 20px gold;
+}
+
+.sparkle:nth-child(odd) {
+  background: #ff6b9d;
+  box-shadow: 0 0 10px #ff6b9d, 0 0 20px #ff6b9d;
+}
+
+.sparkle:nth-child(3n) {
+  background: #60C3AD;
+  box-shadow: 0 0 10px #60C3AD, 0 0 20px #60C3AD;
+}
+
+@keyframes sparkle-fall {
+  0% {
+    transform: translateY(-10px) scale(0);
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(60px) scale(1);
+    opacity: 0;
+  }
+}
+
+.new-year-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  position: relative;
+  z-index: 1;
+}
+
+.new-year-icon {
+  font-size: 1.5rem;
+  animation: bounce 1s ease-in-out infinite;
+}
+
+.new-year-icon:last-of-type {
+  animation-delay: 0.5s;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.new-year-text {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.new-year-wish {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  letter-spacing: 1px;
+}
+
+.new-year-number {
+  font-size: 1.4rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #ffd700 0%, #ff6b9d 50%, #60C3AD 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  0% {
+    filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+  }
+  100% {
+    filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.8));
+  }
+}
+
+.new-year-close {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: white;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  line-height: 1;
+}
+
+.new-year-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Responsive New Year Banner */
+@media (max-width: 768px) {
+  .new-year-banner {
+    padding: 10px 16px;
+    padding-right: 48px;
+  }
+
+  .new-year-icon {
+    font-size: 1.2rem;
+  }
+
+  .new-year-text {
+    flex-direction: row;
+    gap: 6px;
+  }
+
+  .new-year-wish {
+    font-size: 0.85rem;
+  }
+
+  .new-year-number {
+    font-size: 1.1rem;
+  }
+
+  .new-year-content {
+    gap: 10px;
+  }
+
+  .sparkle {
+    width: 4px;
+    height: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .new-year-banner {
+    padding: 8px 12px;
+    padding-right: 44px;
+  }
+
+  .new-year-icon:first-of-type {
+    display: none;
+  }
+
+  .new-year-text {
+    flex-direction: row;
+    gap: 6px;
+  }
+
+  .new-year-wish {
+    font-size: 0.75rem;
+  }
+
+  .new-year-number {
+    font-size: 0.9rem;
+  }
+
+  .new-year-close {
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    font-size: 1rem;
+  }
 }
 
 /* ==================== HERO ==================== */
@@ -620,6 +828,28 @@ body {
 
 .room-card .btn {
   width: 100%;
+}
+
+/* Book button states */
+.btn-book-unselected {
+  background: #9CA3AF;
+  color: white;
+}
+
+.btn-book-unselected:hover {
+  background: #6B7280;
+}
+
+.btn-book-selected {
+  background: var(--color-primary);
+  color: white;
+  box-shadow: 0 4px 20px rgba(96, 195, 173, 0.4);
+}
+
+.btn-book-selected:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 30px rgba(96, 195, 173, 0.5);
 }
 
 .rooms-note {
@@ -1444,7 +1674,7 @@ body {
   }
 
   .hero {
-    padding: 100px 20px 60px;
+    padding: 140px 20px 60px;
     min-height: auto;
   }
 
@@ -1588,7 +1818,7 @@ body {
   }
 
   .hero {
-    padding: 90px 16px 50px;
+    padding: 130px 16px 50px;
   }
 
   .hero-title {
