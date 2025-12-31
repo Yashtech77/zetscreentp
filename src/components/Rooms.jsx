@@ -7,8 +7,8 @@ function Rooms() {
   const rooms = [
     {
       type: 'Triple Sharing',
-      originalPrice: '5,000',
-      price: '4,500',
+      originalPrice: '5,750',
+      price: '5,250',
       period: '/month',
       features: [
         'Spacious triple sharing room',
@@ -23,8 +23,8 @@ function Rooms() {
     },
     {
       type: 'Double Sharing',
-      originalPrice: '5,500',
-      price: '5,000',
+      originalPrice: '6,250',
+      price: '5,750',
       period: '/month',
       features: [
         'Comfortable double sharing',
@@ -39,8 +39,8 @@ function Rooms() {
     },
     {
       type: 'Double with Attached Bath',
-      originalPrice: '6,500',
-      price: '6,000',
+      originalPrice: '6,750',
+      price: '6,250',
       period: '/month',
       features: [
         'Double sharing room',
