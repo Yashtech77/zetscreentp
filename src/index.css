@@ -385,9 +385,15 @@ body {
   }
 
   .new-year-text {
-    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
     gap: 4px;
     text-align: center;
+  }
+
+  .new-year-wish,
+  .new-year-number {
+    display: inline;
   }
 
   .new-year-wish {
@@ -403,6 +409,8 @@ body {
     padding: 3px 8px;
     margin-left: 0;
     margin-top: 2px;
+    width: 100%;
+    text-align: center;
   }
 
   .new-year-close {
@@ -816,6 +824,7 @@ body {
 .room-price {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 8px;
   margin-bottom: 16px;
   padding-bottom: 16px;
@@ -837,7 +846,6 @@ body {
 }
 
 .room-offer-tag {
-  display: inline-block;
   background: linear-gradient(135deg, #ff6b6b 0%, #ff8e53 100%);
   color: white;
   font-size: 0.75rem;
@@ -847,6 +855,8 @@ body {
   padding: 6px 12px;
   border-radius: var(--radius-lg);
   animation: pulse 1.5s ease-in-out infinite;
+  width: 100%;
+  text-align: center;
 }
 
 .room-currency {
