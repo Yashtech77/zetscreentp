@@ -12,6 +12,10 @@ app.use(cors({
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok', message: 'Backend is running 🚀' });
+});
+
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/offers', require('./routes/offers'));
 app.use('/api/rooms', require('./routes/rooms'));
