@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Navigate } from 'react-router-dom'
 import { login, isLoggedIn } from '../api'
 
 export default function Login() {
@@ -9,8 +9,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false)
 
   if (isLoggedIn()) {
-    navigate('/admin/dashboard', { replace: true })
-    return null
+    return <Navigate to="/admin/dashboard" replace />
   }
 
   const handleSubmit = async (e) => {
