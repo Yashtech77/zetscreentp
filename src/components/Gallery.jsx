@@ -22,7 +22,7 @@ function Gallery() {
         <div className="gallery-grid">
           {images.map((item) => (
             <div key={item.id} className="gallery-item">
-              <img src={item.url} alt={item.title} loading="lazy" />
+              <img src={item.url.startsWith('/') ? `${API_BASE}${item.url}` : item.url} alt={item.title} loading="lazy" />
               <div className="gallery-overlay">
                 <span className="gallery-title">{item.title}</span>
               </div>

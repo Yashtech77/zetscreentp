@@ -93,7 +93,7 @@ export default function GalleryAdmin() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 16 }}>
         {images.map(img => (
           <div key={img.id} style={{ position: 'relative', borderRadius: 10, overflow: 'hidden', background: '#f1f5f9', aspectRatio: '4/3' }}>
-            <img src={img.url} alt={img.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src={img.url.startsWith('/') ? `${API_BASE}${img.url}` : img.url} alt={img.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
             <div style={{
               position: 'absolute',
               bottom: 0, left: 0, right: 0,
