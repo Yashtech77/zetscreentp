@@ -5,9 +5,11 @@ const path = require('path');
 
 const app = express();
 
-const allowedOrigins = process.env.CORS_ORIGIN
-  ? process.env.CORS_ORIGIN.split(',')
-  : ['http://localhost:5173', 'http://localhost:4173', 'http://localhost:3000'];
+const allowedOrigins = [
+  'https://gurbaaniliving.com',
+  'https://www.gurbaaniliving.com',
+  'http://localhost:5173',
+];
 
 app.use(cors({
   origin: allowedOrigins,
