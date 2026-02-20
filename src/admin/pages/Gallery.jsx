@@ -7,6 +7,7 @@ export default function GalleryAdmin() {
   const [uploading, setUploading] = useState(false)
   const [msg, setMsg] = useState('')
   const [dragOver, setDragOver] = useState(false)
+  const [pending, setPending] = useState(null) // { file, preview, title }
   const fileRef = useRef()
 
   useEffect(() => {
@@ -15,36 +16,43 @@ export default function GalleryAdmin() {
 
   const showMsg = (text) => { setMsg(text); setTimeout(() => setMsg(''), 3000) }
 
-  const uploadFile = async (file) => {
-    if (!file) return
-    setUploading(true)
-    const form = new FormData()
-    form.append('image', file)
-    form.append('title', file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' '))
-    try {
-      const res = await authFetchForm('/api/gallery', { method: 'POST', body: form })
-      if (!res.ok) throw new Error()
-      const newImg = await res.json()
-      setImages(prev => [...prev, newImg])
-      showMsg('Image uploaded!')
-    } catch {
-      showMsg('Upload failed. Please try again.')
-    } finally {
-      setUploading(false)
-    }
-  }
-
   const handleFileInput = (e) => {
-    const files = Array.from(e.target.files)
-    files.forEach(uploadFile)
+    const file = e.target.files[0]
+    if (!file) return
+    const preview = URL.createObjectURL(file)
+    const defaultTitle = file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ')
+    setPending({ file, preview, title: defaultTitle })
     e.target.value = ''
   }
 
   const handleDrop = (e) => {
     e.preventDefault()
     setDragOver(false)
-    const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'))
-    files.forEach(uploadFile)
+    const file = Array.from(e.dataTransfer.files).find(f => f.type.startsWith('image/'))
+    if (!file) return
+    const preview = URL.createObjectURL(file)
+    const defaultTitle = file.name.replace(/\.[^.]+$/, '').replace(/[-_]/g, ' ')
+    setPending({ file, preview, title: defaultTitle })
+  }
+
+  const handleUpload = async () => {
+    if (!pending) return
+    setUploading(true)
+    const form = new FormData()
+    form.append('image', pending.file)
+    form.append('title', pending.title.trim() || pending.file.name)
+    try {
+      const res = await authFetchForm('/api/gallery', { method: 'POST', body: form })
+      if (!res.ok) throw new Error()
+      const newImg = await res.json()
+      setImages(prev => [...prev, newImg])
+      setPending(null)
+      showMsg('Image uploaded!')
+    } catch {
+      showMsg('Upload failed. Please try again.')
+    } finally {
+      setUploading(false)
+    }
   }
 
   const handleDelete = async (id) => {
@@ -66,6 +74,7 @@ export default function GalleryAdmin() {
 
       {msg && <div style={msgBar(msg)}>{msg}</div>}
 
+      {/* Upload drop zone */}
       <div
         onClick={() => fileRef.current.click()}
         onDragOver={e => { e.preventDefault(); setDragOver(true) }}
@@ -82,18 +91,52 @@ export default function GalleryAdmin() {
           transition: 'all 0.15s',
         }}
       >
-        <input ref={fileRef} type="file" accept="image/*" multiple onChange={handleFileInput} style={{ display: 'none' }} />
+        <input ref={fileRef} type="file" accept="image/*" onChange={handleFileInput} style={{ display: 'none' }} />
         <div style={{ fontSize: 36, marginBottom: 8 }}>📷</div>
         <div style={{ fontWeight: 600, color: '#374151', marginBottom: 4 }}>
-          {uploading ? 'Uploading...' : 'Click or drag images here to upload'}
+          Click or drag an image here to upload
         </div>
         <div style={{ fontSize: 13, color: '#94a3b8' }}>Supports JPG, PNG, WebP • Max 10MB</div>
       </div>
 
+      {/* Title input modal after selecting image */}
+      {pending && (
+        <div style={overlay}>
+          <div style={modal}>
+            <h3 style={{ margin: '0 0 16px', fontSize: 17, fontWeight: 700, color: '#1e293b' }}>Add Image</h3>
+            <img
+              src={pending.preview}
+              alt="preview"
+              style={{ width: '100%', height: 200, objectFit: 'cover', borderRadius: 8, marginBottom: 16 }}
+            />
+            <label style={fieldLabel}>Image Title</label>
+            <input
+              type="text"
+              value={pending.title}
+              onChange={e => setPending(p => ({ ...p, title: e.target.value }))}
+              style={{ ...inputStyle, marginBottom: 20 }}
+              placeholder="e.g. Building View"
+              autoFocus
+            />
+            <div style={{ display: 'flex', gap: 10 }}>
+              <button onClick={handleUpload} disabled={uploading} style={uploadBtn}>
+                {uploading ? 'Uploading...' : 'Upload'}
+              </button>
+              <button onClick={() => setPending(null)} style={cancelBtn}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Image grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 16 }}>
         {images.map(img => (
           <div key={img.id} style={{ position: 'relative', borderRadius: 10, overflow: 'hidden', background: '#f1f5f9', aspectRatio: '4/3' }}>
-            <img src={img.url.startsWith('/') ? `${API_BASE}${img.url}` : img.url} alt={img.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img
+              src={img.url.startsWith('/') ? `${API_BASE}${img.url}` : img.url}
+              alt={img.title}
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+            />
             <div style={{
               position: 'absolute',
               bottom: 0, left: 0, right: 0,
@@ -131,6 +174,12 @@ export default function GalleryAdmin() {
 
 const h1 = { fontSize: 24, fontWeight: 700, color: '#1e293b', marginBottom: 8 }
 const subtext = { color: '#64748b', marginBottom: 24 }
+const fieldLabel = { display: 'block', fontSize: 13, fontWeight: 500, color: '#374151', marginBottom: 6 }
+const inputStyle = { width: '100%', padding: '9px 12px', border: '1px solid #d1d5db', borderRadius: 6, fontSize: 14, boxSizing: 'border-box', outline: 'none' }
+const uploadBtn = { flex: 1, padding: '10px', background: '#6366f1', color: '#fff', border: 'none', borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: 'pointer' }
+const cancelBtn = { flex: 1, padding: '10px', background: '#e2e8f0', color: '#374151', border: 'none', borderRadius: 8, fontSize: 14, fontWeight: 600, cursor: 'pointer' }
+const overlay = { position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 200 }
+const modal = { background: '#fff', borderRadius: 12, padding: 24, width: '100%', maxWidth: 420 }
 const msgBar = (msg) => ({
   background: msg.includes('Error') || msg.includes('failed') ? '#fef2f2' : '#f0fdf4',
   border: `1px solid ${msg.includes('Error') || msg.includes('failed') ? '#fecaca' : '#86efac'}`,
