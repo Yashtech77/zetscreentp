@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
+import API_BASE from '../config'
 
 function Testimonials() {
   const [reviews, setReviews] = useState([])
 
   useEffect(() => {
-    fetch('/api/testimonials').then(r => r.json()).then(setReviews).catch(() => {})
+    fetch(`${API_BASE}/api/testimonials`).then(r => r.json()).then(setReviews).catch(() => {})
   }, [])
 
   const renderStars = (rating) => {

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import API_BASE from '../config'
 
 function Rooms() {
   const [selectedRoom, setSelectedRoom] = useState(null)
@@ -6,8 +7,8 @@ function Rooms() {
   const [contact, setContact] = useState(null)
 
   useEffect(() => {
-    fetch('/api/rooms').then(r => r.json()).then(setRooms).catch(() => {})
-    fetch('/api/contact').then(r => r.json()).then(setContact).catch(() => {})
+    fetch(`${API_BASE}/api/rooms`).then(r => r.json()).then(setRooms).catch(() => {})
+    fetch(`${API_BASE}/api/contact`).then(r => r.json()).then(setContact).catch(() => {})
   }, [])
 
   const phoneNumber = contact?.whatsapp || '919175916383'

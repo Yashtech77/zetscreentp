@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import API_BASE from '../../config'
 
 export default function Dashboard() {
   const [stats, setStats] = useState({ rooms: 0, gallery: 0, testimonials: 0, offerEnabled: false })
 
   useEffect(() => {
     Promise.all([
-      fetch('/api/rooms').then(r => r.json()),
-      fetch('/api/gallery').then(r => r.json()),
-      fetch('/api/testimonials').then(r => r.json()),
-      fetch('/api/offers').then(r => r.json()),
+      fetch(`${API_BASE}/api/rooms`).then(r => r.json()),
+      fetch(`${API_BASE}/api/gallery`).then(r => r.json()),
+      fetch(`${API_BASE}/api/testimonials`).then(r => r.json()),
+      fetch(`${API_BASE}/api/offers`).then(r => r.json()),
     ]).then(([rooms, gallery, testimonials, offers]) => {
       setStats({
         rooms: rooms.length,

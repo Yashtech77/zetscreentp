@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
+import API_BASE from '../config'
 
 const NewYearBanner = () => {
   const [isVisible, setIsVisible] = useState(true)
   const [offer, setOffer] = useState(null)
 
   useEffect(() => {
-    fetch('/api/offers')
+    fetch(`${API_BASE}/api/offers`)
       .then(r => r.json())
       .then(setOffer)
       .catch(() => {})

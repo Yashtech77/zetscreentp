@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { authFetch } from '../api'
+import API_BASE from '../../config'
 
 export default function ContactAdmin() {
   const [contact, setContact] = useState(null)
@@ -7,7 +8,7 @@ export default function ContactAdmin() {
   const [msg, setMsg] = useState('')
 
   useEffect(() => {
-    fetch('/api/contact').then(r => r.json()).then(setContact).catch(() => {})
+    fetch(`${API_BASE}/api/contact`).then(r => r.json()).then(setContact).catch(() => {})
   }, [])
 
   const handleSave = async () => {

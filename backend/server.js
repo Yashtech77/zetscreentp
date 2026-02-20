@@ -5,8 +5,12 @@ const path = require('path');
 
 const app = express();
 
+const allowedOrigins = process.env.CORS_ORIGIN
+  ? process.env.CORS_ORIGIN.split(',')
+  : ['http://localhost:5173', 'http://localhost:4173', 'http://localhost:3000'];
+
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:4173', 'http://localhost:3000'],
+  origin: allowedOrigins,
   credentials: true,
 }));
 app.use(express.json());
@@ -23,14 +27,6 @@ app.use('/api/gallery', require('./routes/gallery'));
 app.use('/api/testimonials', require('./routes/testimonials'));
 app.use('/api/contact', require('./routes/contact'));
 
-// Serve frontend in production
-const frontendDist = path.join(__dirname, '../dist');
-if (require('fs').existsSync(frontendDist)) {
-  app.use(express.static(frontendDist));
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(frontendDist, 'index.html'));
-  });
-}
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

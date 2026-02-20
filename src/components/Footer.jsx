@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
+import API_BASE from '../config'
 
 function Footer() {
   const currentYear = new Date().getFullYear()
   const [contact, setContact] = useState(null)
 
   useEffect(() => {
-    fetch('/api/contact').then(r => r.json()).then(setContact).catch(() => {})
+    fetch(`${API_BASE}/api/contact`).then(r => r.json()).then(setContact).catch(() => {})
   }, [])
 
   const phone = contact?.phone || '+91 91759 16383'

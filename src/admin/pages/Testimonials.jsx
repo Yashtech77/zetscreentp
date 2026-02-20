@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { authFetch } from '../api'
+import API_BASE from '../../config'
 
 const blank = { name: '', role: '', rating: 5, text: '', date: '' }
 
@@ -9,7 +10,7 @@ export default function TestimonialsAdmin() {
   const [msg, setMsg] = useState('')
 
   useEffect(() => {
-    fetch('/api/testimonials').then(r => r.json()).then(setReviews).catch(() => {})
+    fetch(`${API_BASE}/api/testimonials`).then(r => r.json()).then(setReviews).catch(() => {})
   }, [])
 
   const showMsg = (text) => { setMsg(text); setTimeout(() => setMsg(''), 3000) }

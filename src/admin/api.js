@@ -1,7 +1,9 @@
+import API_BASE from '../config'
+
 const getToken = () => localStorage.getItem('adminToken');
 
 export const authFetch = (url, options = {}) => {
-  return fetch(url, {
+  return fetch(`${API_BASE}${url}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
@@ -12,7 +14,7 @@ export const authFetch = (url, options = {}) => {
 };
 
 export const authFetchForm = (url, options = {}) => {
-  return fetch(url, {
+  return fetch(`${API_BASE}${url}`, {
     ...options,
     headers: {
       Authorization: `Bearer ${getToken()}`,
@@ -22,7 +24,7 @@ export const authFetchForm = (url, options = {}) => {
 };
 
 export const login = async (username, password) => {
-  const res = await fetch('/api/auth/login', {
+  const res = await fetch(`${API_BASE}/api/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password }),

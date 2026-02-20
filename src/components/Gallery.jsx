@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react'
+import API_BASE from '../config'
 
 function Gallery() {
   const [images, setImages] = useState([])
 
   useEffect(() => {
-    fetch('/api/gallery').then(r => r.json()).then(setImages).catch(() => {})
+    fetch(`${API_BASE}/api/gallery`).then(r => r.json()).then(setImages).catch(() => {})
   }, [])
 
   return (

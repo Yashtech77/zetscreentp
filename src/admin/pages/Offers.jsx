@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { authFetch } from '../api'
+import API_BASE from '../../config'
 
 export default function Offers() {
   const [offer, setOffer] = useState(null)
@@ -7,7 +8,7 @@ export default function Offers() {
   const [msg, setMsg] = useState('')
 
   useEffect(() => {
-    fetch('/api/offers').then(r => r.json()).then(setOffer).catch(() => {})
+    fetch(`${API_BASE}/api/offers`).then(r => r.json()).then(setOffer).catch(() => {})
   }, [])
 
   const handleChange = (field, value) => {
