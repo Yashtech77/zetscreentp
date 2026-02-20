@@ -19,6 +19,15 @@ app.use('/api/gallery', require('./routes/gallery'));
 app.use('/api/testimonials', require('./routes/testimonials'));
 app.use('/api/contact', require('./routes/contact'));
 
+// Serve frontend in production
+const frontendDist = path.join(__dirname, '../dist');
+if (require('fs').existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendDist, 'index.html'));
+  });
+}
+
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Gurbaani Living backend running on http://localhost:${PORT}`);
