@@ -1,12 +1,21 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const NewYearBanner = () => {
   const [isVisible, setIsVisible] = useState(true)
+  const [offer, setOffer] = useState(null)
+
+  useEffect(() => {
+    fetch('/api/offers')
+      .then(r => r.json())
+      .then(setOffer)
+      .catch(() => {})
+  }, [])
 
   if (!isVisible) return null
+  if (!offer || !offer.enabled) return null
 
   return (
-    <div className="new-year-banner">
+    <div className="new-year-banner" style={offer.bgColor ? { backgroundColor: offer.bgColor } : {}}>
       <div className="new-year-sparkles">
         {[...Array(20)].map((_, i) => (
           <div key={i} className="sparkle" style={{
@@ -19,9 +28,9 @@ const NewYearBanner = () => {
       <div className="new-year-content">
         <span className="new-year-icon">🎉</span>
         <div className="new-year-text">
-          <span className="new-year-wish">Happy New Year</span>
-          <span className="new-year-number">2026</span>
-          <span className="new-year-offer">New Year Offer is Live!</span>
+          <span className="new-year-wish">{offer.title || 'Special Offer'}</span>
+          {offer.discount && <span className="new-year-number">{offer.discount}</span>}
+          <span className="new-year-offer">{offer.subtitle || 'Limited Time Offer!'}</span>
         </div>
         <span className="new-year-icon">🎊</span>
       </div>

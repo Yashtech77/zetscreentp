@@ -1,0 +1,25 @@
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+
+const app = express();
+
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://localhost:4173', 'http://localhost:3000'],
+  credentials: true,
+}));
+app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+app.use('/api/auth', require('./routes/auth'));
+app.use('/api/offers', require('./routes/offers'));
+app.use('/api/rooms', require('./routes/rooms'));
+app.use('/api/gallery', require('./routes/gallery'));
+app.use('/api/testimonials', require('./routes/testimonials'));
+app.use('/api/contact', require('./routes/contact'));
+
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Gurbaani Living backend running on http://localhost:${PORT}`);
+});

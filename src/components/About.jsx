@@ -1,5 +1,21 @@
+import { useState, useEffect } from 'react'
+
 function About() {
-  const phoneNumber = '919175916383'
+  const [contact, setContact] = useState(null)
+
+  useEffect(() => {
+    fetch('/api/contact').then(r => r.json()).then(setContact).catch(() => {})
+  }, [])
+
+  const phoneNumber = contact?.whatsapp || '919175916383'
+  const address = contact?.address || 'Swapanagari Society, Akurdi, Pune - 411033'
+  const phone = contact?.phone || '+91 91759 16383'
+  const stats = contact?.stats || [
+    { number: '2000+', label: 'Happy Residents' },
+    { number: '5+', label: 'Years Experience' },
+    { number: '24/7', label: 'Support Available' },
+    { number: '100%', label: 'Satisfaction Rate' },
+  ]
 
   const amenities = [
     { icon: '🛏️', title: 'Furnished Rooms', desc: 'Fully furnished with premium bedding' },
@@ -11,13 +27,6 @@ function About() {
     { icon: '💧', title: 'RO Water', desc: 'Pure RO drinking water available' },
     { icon: '❄️', title: 'Refrigerator', desc: 'Common fridge for residents' },
     { icon: '🍳', title: 'Induction', desc: 'Induction available for cooking' },
-  ]
-
-  const stats = [
-    { number: '2000+', label: 'Happy Residents' },
-    { number: '5+', label: 'Years Experience' },
-    { number: '24/7', label: 'Support Available' },
-    { number: '100%', label: 'Satisfaction Rate' },
   ]
 
   const handleWhatsApp = () => {
@@ -70,11 +79,11 @@ function About() {
             <div className="contact-info">
               <div className="contact-item">
                 <span className="contact-icon">📍</span>
-                <span>Swapanagari Society, Akurdi, Pune - 411033</span>
+                <span>{address}</span>
               </div>
               <div className="contact-item">
                 <span className="contact-icon">📞</span>
-                <span>+91 91759 16383</span>
+                <span>{phone}</span>
               </div>
             </div>
             <button onClick={handleWhatsApp} className="btn btn-whatsapp">

@@ -1,59 +1,16 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function Rooms() {
-  const phoneNumber = '919175916383'
   const [selectedRoom, setSelectedRoom] = useState(null)
+  const [rooms, setRooms] = useState([])
+  const [contact, setContact] = useState(null)
 
-  const rooms = [
-    {
-      type: 'Triple Sharing',
-      originalPrice: '5,750',
-      price: '5,250',
-      period: '/month',
-      features: [
-        'Spacious triple sharing room',
-        'Individual wardrobe space',
-        'Common washroom',
-        'Hot water facility',
-        'High-speed WiFi',
-        '24/7 security',
-        'Daily housekeeping',
-      ],
-      popular: false,
-    },
-    {
-      type: 'Double Sharing',
-      originalPrice: '6,250',
-      price: '5,750',
-      period: '/month',
-      features: [
-        'Comfortable double sharing',
-        'Personal study desk',
-        'Common washroom',
-        'Hot water facility',
-        'High-speed WiFi',
-        '24/7 security',
-        'Daily housekeeping',
-      ],
-      popular: true,
-    },
-    {
-      type: 'Double with Attached Bath',
-      originalPrice: '6,750',
-      price: '6,250',
-      period: '/month',
-      features: [
-        'Double sharing room',
-        'Personal study desk',
-        'Private attached washroom',
-        'Hot water facility',
-        'High-speed WiFi',
-        '24/7 security',
-        'Daily housekeeping',
-      ],
-      popular: false,
-    },
-  ]
+  useEffect(() => {
+    fetch('/api/rooms').then(r => r.json()).then(setRooms).catch(() => {})
+    fetch('/api/contact').then(r => r.json()).then(setContact).catch(() => {})
+  }, [])
+
+  const phoneNumber = contact?.whatsapp || '919175916383'
 
   const handleBooking = (roomType) => {
     const message = `Hi, I'm interested in booking a ${roomType} room at Gurbaani Living. Please share more details.`
@@ -76,7 +33,7 @@ function Rooms() {
         <div className="rooms-grid">
           {rooms.map((room, index) => (
             <div
-              key={index}
+              key={room.id || index}
               className={`room-card ${room.popular ? 'room-card--popular' : ''} ${selectedRoom === index ? 'room-card--selected' : ''}`}
               onClick={() => setSelectedRoom(selectedRoom === index ? null : index)}
               style={{ cursor: 'pointer' }}
@@ -88,12 +45,12 @@ function Rooms() {
                   <span className="room-original-price">₹{room.originalPrice}</span>
                   <span className="room-currency">₹</span>
                   <span className="room-amount">{room.price}</span>
-                  <span className="room-period">{room.period}</span>
+                  <span className="room-period">{room.period || '/month'}</span>
                 </div>
-                <span className="room-offer-tag mt-4 ">New Year Offer!</span>
+                <span className="room-offer-tag mt-4 ">Special Offer!</span>
               </div>
               <ul className="room-features">
-                {room.features.map((feature, i) => (
+                {(room.features || []).map((feature, i) => (
                   <li key={i}>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

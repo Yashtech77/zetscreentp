@@ -1,57 +1,11 @@
-import buildingImg from '../assets/building.jpeg'
-import bedroomImg from '../assets/3bedroom.jpeg'
-import balconyImg from '../assets/balcony.jpeg'
-import bedroomImg2 from '../assets/2bedroom.jpeg'
-import liftImg from '../assets/Lift.jpeg'
-import bedwashroomImg from '../assets/2bedwithbath.jpeg'
+import { useState, useEffect } from 'react'
 
 function Gallery() {
-  const images = [
-    {
-      id: 1,
-      category: 'exterior',
-      title: 'Building View',
-      image: buildingImg,
-      featured: true
-    },
-    {
-      id: 2,
-      category: 'room',
-      title: '3 Bed Room',
-      image: bedroomImg,
-      featured: true
-    },
-    {
-      id: 3,
-      category: 'room',
-      title: '2 Bed Room',
-      image: bedroomImg2,
-      featured: true
-    },
+  const [images, setImages] = useState([])
 
-    {
-      id: 4,
-      category: 'room',
-      title: 'Bed Room with Washroom',
-      image: bedwashroomImg,
-      featured: true
-    },
-    {
-      id: 5,
-      category: 'room',
-      title: ' Lift Facility',
-      image: liftImg,
-      featured: true
-    },
-    {
-      id: 6,
-      category: 'room',
-      title: 'Balcony View',
-      image: balconyImg,
-      featured: true
-    },
-
-  ]
+  useEffect(() => {
+    fetch('/api/gallery').then(r => r.json()).then(setImages).catch(() => {})
+  }, [])
 
   return (
     <section id="gallery" className="gallery">
@@ -67,7 +21,7 @@ function Gallery() {
         <div className="gallery-grid">
           {images.map((item) => (
             <div key={item.id} className="gallery-item">
-              <img src={item.image} alt={item.title} loading="lazy" />
+              <img src={item.url} alt={item.title} loading="lazy" />
               <div className="gallery-overlay">
                 <span className="gallery-title">{item.title}</span>
               </div>

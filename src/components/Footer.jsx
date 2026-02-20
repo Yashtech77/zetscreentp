@@ -1,5 +1,16 @@
+import { useState, useEffect } from 'react'
+
 function Footer() {
   const currentYear = new Date().getFullYear()
+  const [contact, setContact] = useState(null)
+
+  useEffect(() => {
+    fetch('/api/contact').then(r => r.json()).then(setContact).catch(() => {})
+  }, [])
+
+  const phone = contact?.phone || '+91 91759 16383'
+  const email = contact?.email || 'gurbaaniliving@gmail.com'
+  const address = contact?.address || 'Swapanagari Society, Akurdi, Pune - 411033'
 
   return (
     <footer className="footer">
@@ -30,10 +41,9 @@ function Footer() {
             <div className="footer-column">
               <h4>Contact</h4>
               <ul>
-                <li>+91 91759 16383</li>
-                <li>gurbaaniliving@gmail.com</li>
-                <li>Swapanagari Society, Akurdi</li>
-                <li>Pune - 411033</li>
+                <li>{phone}</li>
+                <li>{email}</li>
+                <li>{address}</li>
               </ul>
             </div>
 
@@ -47,7 +57,6 @@ function Footer() {
                     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                   </svg>
                 </a>
-                 
               </div>
             </div>
           </div>

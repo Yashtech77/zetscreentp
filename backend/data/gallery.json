@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "filename": "building.jpeg",
+    "url": "/uploads/building.jpeg",
+    "title": "Building View",
+    "category": "exterior"
+  },
+  {
+    "id": 2,
+    "filename": "3bedroom.jpeg",
+    "url": "/uploads/3bedroom.jpeg",
+    "title": "3 Bed Room",
+    "category": "room"
+  },
+  {
+    "id": 3,
+    "filename": "2bedroom.jpeg",
+    "url": "/uploads/2bedroom.jpeg",
+    "title": "2 Bed Room",
+    "category": "room"
+  },
+  {
+    "id": 4,
+    "filename": "2bedwithbath.jpeg",
+    "url": "/uploads/2bedwithbath.jpeg",
+    "title": "Bed Room with Washroom",
+    "category": "room"
+  },
+  {
+    "id": 5,
+    "filename": "Lift.jpeg",
+    "url": "/uploads/Lift.jpeg",
+    "title": "Lift Facility",
+    "category": "amenity"
+  },
+  {
+    "id": 6,
+    "filename": "balcony.jpeg",
+    "url": "/uploads/balcony.jpeg",
+    "title": "Balcony View",
+    "category": "room"
+  }
+]

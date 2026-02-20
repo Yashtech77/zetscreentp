@@ -1,11 +1,18 @@
-function Location() {
-  const phoneNumber = '919175916383'
+import { useState, useEffect } from 'react'
 
-  const branches = [
-    { name: 'Akurdi (Main)', address: 'Swapnanagri Society, Akurdi, Pune - 411035' },
-    { name: 'Wakad', address: 'Wakad, Pune' },
-    { name: 'Pimpri-Chinchwad', address: 'Pimpri-Chinchwad, Pune' },
-  ]
+function Location() {
+  const [contact, setContact] = useState(null)
+
+  useEffect(() => {
+    fetch('/api/contact').then(r => r.json()).then(setContact).catch(() => {})
+  }, [])
+
+  const phoneNumber = contact?.whatsapp || '919175916383'
+  const phone = contact?.phone || '+91 91759 16383'
+  const addressFull = contact?.addressFull || 'Swapanagari Housing Society, 128/2, Opp. Silver Akshay Apartment, Gurudwara Colony, Akurdi, Pune - 411033'
+  const hours = contact?.hours || 'Mon - Sun: 9:00 AM - 8:00 PM'
+  const branches = contact?.branches || []
+  const otherBranches = branches.filter(b => b.area !== 'Akurdi')
 
   const handleWhatsApp = () => {
     const message = `Hi, I'm interested in visiting Gurbaani Living PG. Please share directions.`
@@ -49,17 +56,20 @@ function Location() {
               </div>
               <div>
                 <h4>Main Branch - Akurdi</h4>
-                <p>Swapanagari Housing Society, 128/2<br />Opp. Silver Akshay Apartment<br />Gurudwara Colony, Akurdi, Pune - 411033</p>
+                <p style={{ whiteSpace: 'pre-line' }}>{addressFull.replace(/,\s*/g, ',\n')}</p>
               </div>
             </div>
 
-            <div className="branches-list">
-              <h4 className="branches-title">Also Available In</h4>
-              <div className="branch-tags">
-                <span className="branch-tag">Wakad</span>
-                <span className="branch-tag">Pimpri-Chinchwad</span>
+            {otherBranches.length > 0 && (
+              <div className="branches-list">
+                <h4 className="branches-title">Also Available In</h4>
+                <div className="branch-tags">
+                  {otherBranches.map((b, i) => (
+                    <span key={i} className="branch-tag">{b.area}</span>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             <div className="location-card">
               <div className="location-icon">
@@ -69,7 +79,7 @@ function Location() {
               </div>
               <div>
                 <h4>Phone</h4>
-                <p>+91 91759 16383</p>
+                <p>{phone}</p>
               </div>
             </div>
 
@@ -82,7 +92,7 @@ function Location() {
               </div>
               <div>
                 <h4>Visiting Hours</h4>
-                <p>Mon - Sun: 9:00 AM - 8:00 PM</p>
+                <p>{hours}</p>
               </div>
             </div>
 

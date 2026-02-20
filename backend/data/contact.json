@@ -1,0 +1,34 @@
+{
+  "phone": "+91 91759 16383",
+  "whatsapp": "919175916383",
+  "email": "gurbaaniliving@gmail.com",
+  "address": "Swapanagari Society, Akurdi, Pune - 411033",
+  "addressFull": "Swapanagari Housing Society, 128/2, Opp. Silver Akshay Apartment, Gurudwara Colony, Akurdi, Pune - 411033",
+  "hours": "Mon - Sun: 9:00 AM - 8:00 PM",
+  "stats": [
+    { "number": "2000+", "label": "Happy Residents" },
+    { "number": "5+", "label": "Years Experience" },
+    { "number": "24/7", "label": "Support Available" },
+    { "number": "100%", "label": "Satisfaction Rate" }
+  ],
+  "branches": [
+    {
+      "name": "Akurdi (Main)",
+      "area": "Akurdi",
+      "address": "Swapanagari Housing Society, 128/2, Opp. Silver Akshay Apartment, Gurudwara Colony, Akurdi, Pune - 411033",
+      "phone": "+91 91759 16383"
+    },
+    {
+      "name": "Wakad",
+      "area": "Wakad",
+      "address": "Wakad, Pune",
+      "phone": "+91 91759 16383"
+    },
+    {
+      "name": "Pimpri-Chinchwad",
+      "area": "Pimpri-Chinchwad",
+      "address": "Pimpri-Chinchwad, Pune",
+      "phone": "+91 91759 16383"
+    }
+  ]
+}

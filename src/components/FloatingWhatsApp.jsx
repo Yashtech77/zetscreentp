@@ -1,5 +1,13 @@
+import { useState, useEffect } from 'react'
+
 function FloatingWhatsApp() {
-  const phoneNumber = '919175916383'
+  const [contact, setContact] = useState(null)
+
+  useEffect(() => {
+    fetch('/api/contact').then(r => r.json()).then(setContact).catch(() => {})
+  }, [])
+
+  const phoneNumber = contact?.whatsapp || '919175916383'
 
   const handleClick = () => {
     const message = `Hi, I'm interested in Gurbaani Living PG. Please share more details.`

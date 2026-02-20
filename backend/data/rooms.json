@@ -1,0 +1,53 @@
+[
+  {
+    "id": 1,
+    "type": "Triple Sharing",
+    "originalPrice": "5,750",
+    "price": "5,250",
+    "period": "/month",
+    "popular": false,
+    "features": [
+      "Spacious triple sharing room",
+      "Individual wardrobe space",
+      "Common washroom",
+      "Hot water facility",
+      "High-speed WiFi",
+      "24/7 security",
+      "Daily housekeeping"
+    ]
+  },
+  {
+    "id": 2,
+    "type": "Double Sharing",
+    "originalPrice": "6,250",
+    "price": "5,750",
+    "period": "/month",
+    "popular": true,
+    "features": [
+      "Comfortable double sharing",
+      "Personal study desk",
+      "Common washroom",
+      "Hot water facility",
+      "High-speed WiFi",
+      "24/7 security",
+      "Daily housekeeping"
+    ]
+  },
+  {
+    "id": 3,
+    "type": "Double with Attached Bath",
+    "originalPrice": "6,750",
+    "price": "6,250",
+    "period": "/month",
+    "popular": false,
+    "features": [
+      "Double sharing room",
+      "Personal study desk",
+      "Private attached washroom",
+      "Hot water facility",
+      "High-speed WiFi",
+      "24/7 security",
+      "Daily housekeeping"
+    ]
+  }
+]
