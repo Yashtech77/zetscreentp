@@ -128,10 +128,39 @@ export default function GalleryAdmin() {
         </div>
       )}
 
+      {/* Hint */}
+      <div style={{
+        background: '#fffbeb',
+        border: '1px solid #fcd34d',
+        borderRadius: 8,
+        padding: '10px 16px',
+        marginBottom: 20,
+        fontSize: 13,
+        color: '#92400e',
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+      }}>
+        💡 <span>Add images in <strong>multiples of 3</strong> (3, 6, 9…) — the gallery shows <strong>3 columns</strong> on the website, so incomplete rows look best when filled.</span>
+      </div>
+
+      {/* Count badge */}
+      <div style={{ marginBottom: 12, fontSize: 13, color: '#64748b' }}>
+        {images.length} image{images.length !== 1 ? 's' : ''} uploaded
+        {images.length > 0 && images.length % 3 !== 0 && (
+          <span style={{ marginLeft: 8, color: '#f59e0b', fontWeight: 500 }}>
+            ⚠ Add {3 - (images.length % 3)} more to complete the row
+          </span>
+        )}
+        {images.length > 0 && images.length % 3 === 0 && (
+          <span style={{ marginLeft: 8, color: '#10b981', fontWeight: 500 }}>✓ Rows are complete</span>
+        )}
+      </div>
+
       {/* Image grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 16 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
         {images.map(img => (
-          <div key={img.id} style={{ position: 'relative', borderRadius: 10, overflow: 'hidden', background: '#f1f5f9', aspectRatio: '4/3' }}>
+          <div key={img.id} style={{ position: 'relative', borderRadius: 10, overflow: 'hidden', background: '#f1f5f9', height: 180 }}>
             <img
               src={img.url.startsWith('/') ? `${API_BASE}${img.url}` : img.url}
               alt={img.title}
