@@ -1,7 +1,17 @@
 {
   "permissions": {
     "allow": [
-      "Bash(vercel --version:*)"
+      "Bash(vercel --version:*)",
+      "Bash(head:*)",
+      "Bash(netstat:*)",
+      "Bash(taskkill:*)",
+      "Bash(cmd.exe:*)",
+      "Bash(powershell:*)",
+      "Bash(sleep 2:*)",
+      "Bash(node:*)",
+      "Bash(curl:*)",
+      "Bash(cd:*)",
+      "Bash(cd \"/c/Users/Yash raj/Desktop/workspace/claude-demo/gurbaani-living\" && npm run build 2>&1)"
     ]
   }
 }

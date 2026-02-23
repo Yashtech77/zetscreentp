@@ -86,7 +86,7 @@ const OCCUPANCY_OPTIONS = [
 const typeLabel = (t) => TYPE_OPTIONS.find(o => o.value === t)?.label || t
 const typeColor = (t) => TYPE_OPTIONS.find(o => o.value === t)?.color || '#6366f1'
 
-const emptyLocation = { name: '', slug: '', enabled: true, order: '', mapEmbed: '' }
+const emptyLocation = { name: '', slug: '', enabled: true, order: '', phone: '', whatsapp: '', mapEmbed: '' }
 const emptyBuilding = { name: '', type: 'boys', price: '', description: '', address: '', amenities: '', enabled: true }
 const emptyRoom = { name: '', occupancy: 'double_attached', price: '', description: '', amenities: '', enabled: true }
 
@@ -138,7 +138,7 @@ export default function LocationsAdmin() {
   }
 
   const openEditLocation = (loc) => {
-    setLocForm({ name: loc.name, slug: loc.slug, enabled: loc.enabled, order: loc.order, mapEmbed: loc.mapEmbed || '' })
+    setLocForm({ name: loc.name, slug: loc.slug, enabled: loc.enabled, order: loc.order, phone: loc.phone || '', whatsapp: loc.whatsapp || '', mapEmbed: loc.mapEmbed || '' })
     setLocEditId(loc.id)
     setLocModal(true)
   }
@@ -479,6 +479,18 @@ export default function LocationsAdmin() {
             <input value={locForm.slug} onChange={e => setLocForm(p => ({ ...p, slug: e.target.value }))} style={{ ...s.input, marginBottom: 12 }} placeholder="e.g. akurdi" />
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
               <div><label style={s.label}>Display Order</label><input type="number" value={locForm.order} onChange={e => setLocForm(p => ({ ...p, order: e.target.value }))} style={s.input} placeholder="1" min="1" /></div>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+              <div>
+                <label style={s.label}>Contact Phone</label>
+                <input value={locForm.phone} onChange={e => setLocForm(p => ({ ...p, phone: e.target.value }))} style={s.input} placeholder="+91 98765 43210" />
+                <p style={{ fontSize: 11, color: '#94a3b8', marginTop: 4 }}>Shown in location contact card</p>
+              </div>
+              <div>
+                <label style={s.label}>WhatsApp Number</label>
+                <input value={locForm.whatsapp} onChange={e => setLocForm(p => ({ ...p, whatsapp: e.target.value }))} style={s.input} placeholder="919876543210 (with country code)" />
+                <p style={{ fontSize: 11, color: '#94a3b8', marginTop: 4 }}>Used for enquiry links (no + or spaces)</p>
+              </div>
             </div>
             <label style={s.label}>Google Maps Location URL</label>
             <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 8, padding: '10px 12px', marginBottom: 8, fontSize: 12, color: '#475569', lineHeight: 1.7 }}>

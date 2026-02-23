@@ -174,7 +174,7 @@ export default function BuildingDetail() {
     }).catch(() => setLoading(false))
   }, [locationSlug, buildingId])
 
-  const phoneNumber = contact?.whatsapp || '919175916383'
+  const phoneNumber = location?.whatsapp || contact?.whatsapp || '919175916383'
   const type = building ? (TYPE_CONFIG[building.type] || TYPE_CONFIG.boys) : null
   const enabledRooms = (building?.roomTypes || []).filter(r => r.enabled)
 

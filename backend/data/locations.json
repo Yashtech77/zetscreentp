@@ -5,6 +5,8 @@
     "slug": "akurdi",
     "enabled": true,
     "order": 1,
+    "phone": "+91 91759 16383",
+    "whatsapp": "919175916383",
     "mapEmbed": "https://maps.google.com/maps?q=Gurbaani+Living+PG+Hostel+Swapanagari+Housing+Society+Akurdi+Pune+411033&t=&z=16&ie=UTF8&iwloc=&output=embed",
     "buildings": [
       {
@@ -145,6 +147,8 @@
     "slug": "wakad",
     "enabled": true,
     "order": 2,
+    "phone": "",
+    "whatsapp": "",
     "mapEmbed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30243.393606215923!2d73.7665992!3d18.644951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b912a2280ef5%3A0x2a2c253b947f71b5!2sGURBAANI%20LIVING%20PG!5e0!3m2!1sen!2sin!4v1771849175643!5m2!1sen!2sin",
     "buildings": [
       {
@@ -166,6 +170,8 @@
     "slug": "rahatani",
     "enabled": true,
     "order": 4,
+    "phone": "",
+    "whatsapp": "",
     "mapEmbed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3781.208264496133!2d73.7820620095612!3d18.60970006637497!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b9142a47a85d%3A0x69eb134e10596817!2sGurbaani%20Living%20PG%20Rahatani!5e0!3m2!1sen!2sin!4v1771848826066!5m2!1sen!2sin",
     "buildings": []
   }

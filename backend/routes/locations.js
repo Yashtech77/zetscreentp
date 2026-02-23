@@ -37,7 +37,7 @@ router.get('/all', authMiddleware, (req, res) => {
 
 // Admin: create location
 router.post('/', authMiddleware, (req, res) => {
-  const { name, slug, enabled, order, mapEmbed } = req.body;
+  const { name, slug, enabled, order, mapEmbed, phone, whatsapp } = req.body;
   if (!name || !slug) return res.status(400).json({ error: 'name and slug are required' });
   const locations = readLocations();
   const newLocation = {
@@ -46,6 +46,8 @@ router.post('/', authMiddleware, (req, res) => {
     slug,
     enabled: enabled !== false,
     order: Number(order) || locations.length + 1,
+    phone: phone || '',
+    whatsapp: whatsapp || '',
     mapEmbed: mapEmbed || '',
     buildings: [],
   };
@@ -59,13 +61,15 @@ router.put('/:id', authMiddleware, (req, res) => {
   const locations = readLocations();
   const idx = locations.findIndex(l => l.id === parseInt(req.params.id));
   if (idx === -1) return res.status(404).json({ error: 'Location not found' });
-  const { name, slug, enabled, order, mapEmbed } = req.body;
+  const { name, slug, enabled, order, mapEmbed, phone, whatsapp } = req.body;
   locations[idx] = {
     ...locations[idx],
     name: name ?? locations[idx].name,
     slug: slug ?? locations[idx].slug,
     enabled: enabled !== undefined ? enabled : locations[idx].enabled,
     order: order !== undefined ? Number(order) : locations[idx].order,
+    phone: phone !== undefined ? phone : locations[idx].phone,
+    whatsapp: whatsapp !== undefined ? whatsapp : locations[idx].whatsapp,
     mapEmbed: mapEmbed !== undefined ? mapEmbed : locations[idx].mapEmbed,
   };
   writeLocations(locations);

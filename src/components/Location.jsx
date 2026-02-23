@@ -165,10 +165,12 @@ function Location() {
     }).catch(() => {})
   }, [])
 
-  const phoneNumber = contact?.whatsapp || '919175916383'
-  const phone = contact?.phone || '+91 91759 16383'
+  const globalWhatsapp = contact?.whatsapp || '919175916383'
+  const globalPhone = contact?.phone || '+91 91759 16383'
   const hours = contact?.hours || 'Mon - Sun: 9:00 AM - 8:00 PM'
   const active = locations[activeIdx]
+  const phoneNumber = active?.whatsapp || globalWhatsapp
+  const phone = active?.phone || globalPhone
   const [showModal, setShowModal] = useState(false)
 
   return (
