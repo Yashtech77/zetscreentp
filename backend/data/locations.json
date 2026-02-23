@@ -1,0 +1,172 @@
+[
+  {
+    "id": 1,
+    "name": "Akurdi",
+    "slug": "akurdi",
+    "enabled": true,
+    "order": 1,
+    "mapEmbed": "https://maps.google.com/maps?q=Gurbaani+Living+PG+Hostel+Swapanagari+Housing+Society+Akurdi+Pune+411033&t=&z=16&ie=UTF8&iwloc=&output=embed",
+    "buildings": [
+      {
+        "id": 101,
+        "name": "Boys PG - Block A",
+        "type": "boys",
+        "price": 4000,
+        "description": "Comfortable boys PG with modern amenities near Akurdi railway station.",
+        "address": "Swapanagari Housing Society, 128/2, Gurudwara Colony, Akurdi, Pune - 411033",
+        "amenities": [
+          "WiFi",
+          "CCTV",
+          "RO Water",
+          "Washing Machine",
+          "Fridge",
+          "Hot Water",
+          "Parking",
+          "Room Service"
+        ],
+        "photos": [
+          "/uploads/1771839926396-919355577.png",
+          "/uploads/1771839945178-292270500.png",
+          "/uploads/1771839951528-396976443.png"
+        ],
+        "enabled": true,
+        "roomTypes": [
+          {
+            "id": 1001,
+            "name": "Double (Attached Bathroom)",
+            "occupancy": "double_attached",
+            "price": 6000,
+            "description": "2-person room with private attached bathroom.",
+            "amenities": [
+              "Attached Bathroom",
+              "Wardrobe",
+              "Study Table",
+              "Fan"
+            ],
+            "photos": [
+              "/uploads/1771850488897-47282851.png",
+              "/uploads/1771850495590-31325468.png"
+            ],
+            "enabled": true
+          },
+          {
+            "id": 1002,
+            "name": "Double Sharing",
+            "occupancy": "double_sharing",
+            "price": 5000,
+            "description": "2-person shared room with common bathroom.",
+            "amenities": [
+              "Common Bathroom",
+              "Wardrobe",
+              "Fan"
+            ],
+            "photos": [
+              "/uploads/1771850502226-371368570.png",
+              "/uploads/1771850505740-967962221.png"
+            ],
+            "enabled": true
+          },
+          {
+            "id": 1003,
+            "name": "Triple Sharing",
+            "occupancy": "triple_sharing",
+            "price": 4000,
+            "description": "3-person sharing with spacious room and common bathroom.",
+            "amenities": [
+              "Common Bathroom",
+              "Wardrobe",
+              "Fan"
+            ],
+            "photos": [],
+            "enabled": true
+          }
+        ]
+      },
+      {
+        "id": 102,
+        "name": "Boys PG - Block B",
+        "type": "boys",
+        "price": 4500,
+        "description": "Spacious boys PG with attached bathrooms and 24/7 security.",
+        "address": "Swapanagari Housing Society, 128/2, Gurudwara Colony, Akurdi, Pune - 411033",
+        "amenities": [
+          "WiFi",
+          "CCTV",
+          "RO Water",
+          "Washing Machine",
+          "Fridge"
+        ],
+        "photos": [],
+        "enabled": true,
+        "roomTypes": []
+      },
+      {
+        "id": 103,
+        "name": "Girls PG",
+        "type": "girls",
+        "price": 5000,
+        "description": "Safe and secure girls-only PG with 24/7 security and homely atmosphere.",
+        "address": "Opp. Silver Akshay Apartment, Gurudwara Colony, Akurdi, Pune - 411033",
+        "amenities": [
+          "WiFi",
+          "CCTV",
+          "RO Water",
+          "Washing Machine",
+          "Room Service"
+        ],
+        "photos": [],
+        "enabled": true,
+        "roomTypes": []
+      },
+      {
+        "id": 104,
+        "name": "Co-living Space",
+        "type": "coliving",
+        "price": 6000,
+        "description": "Modern co-living space with shared kitchen, lounge, and community activities.",
+        "address": "Swapanagari Housing Society, 128/2, Gurudwara Colony, Akurdi, Pune - 411033",
+        "amenities": [
+          "WiFi",
+          "CCTV",
+          "RO Water",
+          "Fridge",
+          "Common Induction",
+          "Washing Machine"
+        ],
+        "photos": [],
+        "enabled": true,
+        "roomTypes": []
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Wakad",
+    "slug": "wakad",
+    "enabled": true,
+    "order": 2,
+    "mapEmbed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30243.393606215923!2d73.7665992!3d18.644951!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b912a2280ef5%3A0x2a2c253b947f71b5!2sGURBAANI%20LIVING%20PG!5e0!3m2!1sen!2sin!4v1771849175643!5m2!1sen!2sin",
+    "buildings": [
+      {
+        "id": 1771846416932,
+        "name": "Rocking boyz",
+        "type": "boys",
+        "price": 5670,
+        "description": "",
+        "address": "",
+        "amenities": [],
+        "photos": [],
+        "enabled": true
+      }
+    ]
+  },
+  {
+    "id": 1771848803944,
+    "name": "Rahatani",
+    "slug": "rahatani",
+    "enabled": true,
+    "order": 4,
+    "mapEmbed": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3781.208264496133!2d73.7820620095612!3d18.60970006637497!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2b9142a47a85d%3A0x69eb134e10596817!2sGurbaani%20Living%20PG%20Rahatani!5e0!3m2!1sen!2sin!4v1771848826066!5m2!1sen!2sin",
+    "buildings": []
+  }
+]

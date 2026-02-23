@@ -28,6 +28,8 @@ app.use('/api/rooms', require('./routes/rooms'));
 app.use('/api/gallery', require('./routes/gallery'));
 app.use('/api/testimonials', require('./routes/testimonials'));
 app.use('/api/contact', require('./routes/contact'));
+app.use('/api/locations', require('./routes/locations'));
+app.use('/api/enquiries', require('./routes/enquiries'));
 
 
 const PORT = process.env.PORT || 3001;

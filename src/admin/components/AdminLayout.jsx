@@ -3,8 +3,9 @@ import { logout } from '../api'
 
 const navItems = [
   { path: '/admin/dashboard', label: 'Dashboard', icon: '🏠' },
+  { path: '/admin/enquiries', label: 'Enquiries', icon: '💬' },
   { path: '/admin/offers', label: 'Offers Banner', icon: '🎉' },
-  { path: '/admin/rooms', label: 'Rooms', icon: '🛏️' },
+  { path: '/admin/locations', label: 'Locations', icon: '📍' },
   { path: '/admin/gallery', label: 'Gallery', icon: '🖼️' },
   { path: '/admin/testimonials', label: 'Testimonials', icon: '⭐' },
   { path: '/admin/contact', label: 'Contact Info', icon: '📞' },

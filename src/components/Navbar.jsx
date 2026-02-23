@@ -23,7 +23,7 @@ function Navbar() {
 
         <ul className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
           <li><a href="#home" onClick={closeMenu}>Home</a></li>
-          <li><a href="#rooms" onClick={closeMenu}>Rooms</a></li>
+          <li><a href="#location" onClick={closeMenu}>Locations</a></li>
           <li><a href="#gallery" onClick={closeMenu}>Gallery</a></li>
           <li><a href="#testimonials" onClick={closeMenu}>Reviews</a></li>
           <li><a href="#location" onClick={closeMenu}>Location</a></li>

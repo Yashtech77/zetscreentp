@@ -64,7 +64,22 @@ export default function Offers() {
         <div style={grid2}>
           <Field label="Banner Title" value={offer.title} onChange={v => handleChange('title', v)} />
           <Field label="Subtitle" value={offer.subtitle} onChange={v => handleChange('subtitle', v)} />
-          <Field label="Discount Text" value={offer.discount} onChange={v => handleChange('discount', v)} placeholder="e.g. 10% OFF" />
+          <Field label="Discount Text (banner display)" value={offer.discount} onChange={v => handleChange('discount', v)} placeholder="e.g. 10% OFF" />
+          <div>
+            <label style={fieldLabel}>Discount % (applied to room prices)</label>
+            <input
+              type="number"
+              min="0"
+              max="100"
+              value={offer.discountPercent ?? 0}
+              onChange={e => handleChange('discountPercent', Number(e.target.value))}
+              style={inputStyle}
+              placeholder="e.g. 10"
+            />
+            <p style={{ fontSize: 11, color: '#94a3b8', marginTop: 4 }}>
+              Room prices will show original crossed-out + discounted price when banner is enabled.
+            </p>
+          </div>
           <Field label="Valid Until" value={offer.validUntil} onChange={v => handleChange('validUntil', v)} type="date" />
           <div>
             <label style={fieldLabel}>Background Color</label>
