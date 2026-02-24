@@ -3,34 +3,41 @@ import { Link } from 'react-router-dom'
 import API_BASE from '../../config'
 
 export default function Dashboard() {
-  const [stats, setStats] = useState({ rooms: 0, gallery: 0, testimonials: 0, offerEnabled: false })
+  const [stats, setStats] = useState({ locations: 0, gallery: 0, testimonials: 0, enquiries: 0, offerEnabled: false })
 
   useEffect(() => {
+    const token = localStorage.getItem('token')
+    const authHeaders = { Authorization: `Bearer ${token}` }
+
     Promise.all([
-      fetch(`${API_BASE}/api/rooms`).then(r => r.json()),
+      fetch(`${API_BASE}/api/locations`).then(r => r.json()),
       fetch(`${API_BASE}/api/gallery`).then(r => r.json()),
       fetch(`${API_BASE}/api/testimonials`).then(r => r.json()),
       fetch(`${API_BASE}/api/offers`).then(r => r.json()),
-    ]).then(([rooms, gallery, testimonials, offers]) => {
+      fetch(`${API_BASE}/api/enquiries`, { headers: authHeaders }).then(r => r.json()),
+    ]).then(([locations, gallery, testimonials, offers, enquiries]) => {
       setStats({
-        rooms: rooms.length,
-        gallery: gallery.length,
-        testimonials: testimonials.length,
-        offerEnabled: offers.enabled,
+        locations: Array.isArray(locations) ? locations.length : 0,
+        gallery: Array.isArray(gallery) ? gallery.length : 0,
+        testimonials: Array.isArray(testimonials) ? testimonials.length : 0,
+        enquiries: Array.isArray(enquiries) ? enquiries.length : 0,
+        offerEnabled: offers?.enabled || false,
       })
     }).catch(() => {})
   }, [])
 
   const cards = [
-    { label: 'Total Rooms', value: stats.rooms, link: '/admin/rooms', icon: '🛏️', color: '#6366f1' },
+    { label: 'Locations', value: stats.locations, link: '/admin/locations', icon: '📍', color: '#6366f1' },
+    { label: 'Enquiries', value: stats.enquiries, link: '/admin/enquiries', icon: '💬', color: '#8b5cf6' },
     { label: 'Gallery Images', value: stats.gallery, link: '/admin/gallery', icon: '🖼️', color: '#0ea5e9' },
     { label: 'Testimonials', value: stats.testimonials, link: '/admin/testimonials', icon: '⭐', color: '#f59e0b' },
     { label: 'Banner', value: stats.offerEnabled ? 'Active' : 'Disabled', link: '/admin/offers', icon: '🎉', color: stats.offerEnabled ? '#10b981' : '#6b7280' },
   ]
 
   const quickLinks = [
+    { path: '/admin/locations', label: 'Manage Locations & Rooms', icon: '📍' },
+    { path: '/admin/enquiries', label: 'View Enquiries', icon: '💬' },
     { path: '/admin/offers', label: 'Manage Offers Banner', icon: '🎉' },
-    { path: '/admin/rooms', label: 'Edit Rooms & Pricing', icon: '🛏️' },
     { path: '/admin/gallery', label: 'Upload Gallery Images', icon: '🖼️' },
     { path: '/admin/testimonials', label: 'Manage Reviews', icon: '⭐' },
     { path: '/admin/contact', label: 'Update Contact Info', icon: '📞' },
