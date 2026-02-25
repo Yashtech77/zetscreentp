@@ -18,6 +18,7 @@ import GalleryAdmin from './admin/pages/Gallery'
 import TestimonialsAdmin from './admin/pages/Testimonials'
 import ContactAdmin from './admin/pages/Contact'
 import LocationsAdmin from './admin/pages/Locations'
+import HeroImagesAdmin from './admin/pages/HeroImages'
 import AdminLayout from './admin/components/AdminLayout'
 import ProtectedRoute from './admin/components/ProtectedRoute'
 import './App.css'
@@ -61,6 +62,7 @@ function App() {
                 <Route path="testimonials" element={<TestimonialsAdmin />} />
                 <Route path="contact" element={<ContactAdmin />} />
                 <Route path="locations" element={<LocationsAdmin />} />
+                <Route path="hero-images" element={<HeroImagesAdmin />} />
                 <Route path="*" element={<Dashboard />} />
               </Routes>
             </AdminLayout>

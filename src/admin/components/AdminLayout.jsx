@@ -6,6 +6,7 @@ const navItems = [
   { path: '/admin/enquiries', label: 'Enquiries', icon: '💬' },
   { path: '/admin/offers', label: 'Offers Banner', icon: '🎉' },
   { path: '/admin/locations', label: 'Locations', icon: '📍' },
+  { path: '/admin/hero-images', label: 'Hero Images', icon: '🏠' },
   { path: '/admin/gallery', label: 'Gallery', icon: '🖼️' },
   { path: '/admin/testimonials', label: 'Testimonials', icon: '⭐' },
   { path: '/admin/contact', label: 'Contact Info', icon: '📞' },

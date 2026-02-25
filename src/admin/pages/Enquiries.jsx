@@ -25,6 +25,25 @@ export default function Enquiries() {
 
   useEffect(() => { load() }, [])
 
+  const downloadCSV = () => {
+    const headers = ['Name', 'Mobile', 'Occupation', 'Location', 'Building', 'Room Type', 'Date']
+    const rows = filtered.map(e => [
+      e.name, e.mobile, e.occupation || '',
+      e.locationName || '', e.buildingName || '', e.roomName || '',
+      fmt(e.createdAt),
+    ])
+    const csv = [headers, ...rows]
+      .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+      .join('\n')
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `enquiries-${new Date().toISOString().slice(0, 10)}.csv`
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this enquiry?')) return
     await authFetch(`/api/enquiries/${id}`, { method: 'DELETE' })
@@ -57,8 +76,13 @@ export default function Enquiries() {
         <select value={filterLocation} onChange={e => setFilterLocation(e.target.value)} style={{ ...inputStyle, maxWidth: 180 }}>
           {locations.map(l => <option key={l}>{l}</option>)}
         </select>
-        <div style={{ marginLeft: 'auto', fontSize: 13, color: '#64748b', alignSelf: 'center' }}>
-          {filtered.length} enquir{filtered.length === 1 ? 'y' : 'ies'}
+        <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: 12 }}>
+          <span style={{ fontSize: 13, color: '#64748b' }}>
+            {filtered.length} enquir{filtered.length === 1 ? 'y' : 'ies'}
+          </span>
+          <button onClick={downloadCSV} disabled={filtered.length === 0} style={dlBtn}>
+            ⬇ Download Excel
+          </button>
         </div>
       </div>
 
@@ -145,3 +169,4 @@ const locBadge = { fontSize: 12, fontWeight: 600, background: '#eff6ff', color: 
 const dateTag = { fontSize: 11, color: '#94a3b8', background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 6, padding: '3px 8px' }
 const waBtn = { padding: '6px 12px', background: '#25d366', color: '#fff', border: 'none', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: 'pointer', textDecoration: 'none' }
 const delBtn = { padding: '6px 12px', background: '#fff', color: '#dc2626', border: '1px solid #fecaca', borderRadius: 6, fontSize: 12, fontWeight: 600, cursor: 'pointer' }
+const dlBtn = { padding: '7px 14px', background: '#059669', color: '#fff', border: 'none', borderRadius: 6, fontSize: 13, fontWeight: 600, cursor: 'pointer' }

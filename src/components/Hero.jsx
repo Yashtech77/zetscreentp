@@ -1,26 +1,83 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import buildingImg from '../assets/building.jpeg'
 import EnquiryModal from './EnquiryModal'
+import API_BASE from '../config'
+
+function HeroCarousel({ images }) {
+  const [current, setCurrent] = useState(0)
+  const timerRef = useRef(null)
+
+  const startTimer = () => {
+    clearInterval(timerRef.current)
+    timerRef.current = setInterval(() => {
+      setCurrent(c => (c + 1) % images.length)
+    }, 3000)
+  }
+
+  useEffect(() => {
+    if (images.length > 1) startTimer()
+    return () => clearInterval(timerRef.current)
+  }, [images.length])
+
+  const goTo = (idx) => {
+    setCurrent(idx)
+    startTimer()
+  }
+
+  return (
+    <div className="hero-carousel">
+      <div className="hero-carousel-track" style={{ transform: `translateX(-${current * 100}%)` }}>
+        {images.map((src, i) => (
+          <img key={i} src={src} alt={`Building ${i + 1}`} className="hero-carousel-img" />
+        ))}
+      </div>
+      {images.length > 1 && (
+        <div className="hero-carousel-dots">
+          {images.map((_, i) => (
+            <button
+              key={i}
+              className={`hero-carousel-dot${i === current ? ' active' : ''}`}
+              onClick={() => goTo(i)}
+              aria-label={`Slide ${i + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
 
 function Hero() {
   const phoneNumber = '919175916383'
   const [showModal, setShowModal] = useState(false)
+  const [heroImages, setHeroImages] = useState([])
+
+  useEffect(() => {
+    fetch(`${API_BASE}/api/hero-images`)
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setHeroImages(data.map(img => img.url.startsWith('/') ? `${API_BASE}${img.url}` : img.url))
+        }
+      })
+      .catch(() => {})
+  }, [])
 
   const features = [
     {
       title: 'For Students',
-      subtitle: 'Near colleges ',
-      image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&q=80'
+      subtitle: 'Near colleges',
+      image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=200&fit=crop&crop=center&q=80'
     },
     {
       title: 'For Professionals',
       subtitle: 'Close to IT hubs',
-      image: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80'
+      image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=200&fit=crop&crop=center&q=80'
     },
     {
       title: 'Safe & Secure',
       subtitle: '24/7 security & CCTV',
-      image: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&q=80'
+      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=200&fit=crop&crop=center&q=80'
     }
   ]
 
@@ -33,7 +90,7 @@ function Hero() {
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
             </svg>
-            Trusted by 2000+ Residents
+            Trusted by 14999+ Residents
           </span>
 
           <h1 className="hero-title">
@@ -73,10 +130,10 @@ function Hero() {
 
         <div className="hero-visual">
           <div className="hero-main-image">
-            <img
-              src={buildingImg}
-              alt="Gurbaani Living Building"
-            />
+            {heroImages.length > 0
+              ? <HeroCarousel images={heroImages} />
+              : <img src={buildingImg} alt="Gurbaani Living Building" />
+            }
           </div>
 
           <div className="hero-feature-cards">

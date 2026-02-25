@@ -30,6 +30,7 @@ app.use('/api/testimonials', require('./routes/testimonials'));
 app.use('/api/contact', require('./routes/contact'));
 app.use('/api/locations', require('./routes/locations'));
 app.use('/api/enquiries', require('./routes/enquiries'));
+app.use('/api/hero-images', require('./routes/hero-images'));
 
 
 const PORT = process.env.PORT || 3001;
