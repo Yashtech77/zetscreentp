@@ -2911,17 +2911,20 @@ a.loc-contact-value:hover { color: var(--color-primary); }
 
   .hero-feature-cards {
     grid-template-columns: 1fr;
-    gap: 12px;
+    gap: 10px;
   }
 
   .hero-feature-card {
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    gap: 14px;
   }
 
   .hero-feature-image {
-    width: 100%;
+    width: 80px;
     height: 80px;
     flex-shrink: 0;
+    border-radius: var(--radius-sm);
   }
 
   .hero-feature-arrow {
