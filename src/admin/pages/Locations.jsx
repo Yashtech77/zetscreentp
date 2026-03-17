@@ -304,12 +304,12 @@ export default function LocationsAdmin() {
   return (
     <div>
       {/* Header */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-        <div>
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, marginBottom: 8 }}>
+        <div style={{ minWidth: 0 }}>
           <h1 style={s.h1}>Locations & Buildings</h1>
           <p style={s.sub}>Manage areas, PG buildings, room types, and photos.</p>
         </div>
-        <button onClick={openAddLocation} style={s.addBtn}>+ Add Location</button>
+        <button onClick={openAddLocation} style={{ ...s.addBtn, flexShrink: 0 }}>+ Add Location</button>
       </div>
 
       {msg && <div style={s.msgBar(msg)}>{msg}</div>}
@@ -348,11 +348,11 @@ export default function LocationsAdmin() {
           </div>
 
           {/* Buildings section */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
-            <h3 style={{ fontSize: 15, fontWeight: 700, color: '#1e293b' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 10, marginBottom: 14 }}>
+            <h3 style={{ fontSize: 15, fontWeight: 700, color: '#1e293b', margin: 0 }}>
               Buildings <span style={{ fontWeight: 400, color: '#64748b', fontSize: 13 }}>({(activeLoc.buildings || []).length})</span>
             </h3>
-            <button onClick={openAddBuilding} style={s.addBldBtn}>+ Add Building</button>
+            <button onClick={openAddBuilding} style={{ ...s.addBldBtn, flexShrink: 0 }}>+ Add Building</button>
           </div>
 
           {(activeLoc.buildings || []).length === 0 ? (
@@ -365,28 +365,30 @@ export default function LocationsAdmin() {
                 <div key={b.id} style={{ background: '#fff', borderRadius: 12, overflow: 'hidden', boxShadow: '0 1px 4px rgba(0,0,0,0.07)', borderLeft: `4px solid ${typeColor(b.type)}`, opacity: b.enabled ? 1 : 0.6 }}>
 
                   {/* Building header row */}
-                  <div style={{ padding: '14px 18px', display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                        <span style={{ fontWeight: 700, fontSize: 15, color: '#1e293b' }}>{b.name}</span>
-                        <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 8px', borderRadius: 10, background: typeColor(b.type) + '18', color: typeColor(b.type) }}>{typeLabel(b.type)}</span>
+                  <div style={{ padding: '14px 18px', display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                    <div style={{ flex: '1 1 160px', minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
+                        <span style={{ fontWeight: 700, fontSize: 14, color: '#1e293b' }}>{b.name}</span>
+                        <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 10, background: typeColor(b.type) + '18', color: typeColor(b.type), whiteSpace: 'nowrap' }}>{typeLabel(b.type)}</span>
                       </div>
-                      <div style={{ fontSize: 13, color: '#6366f1', fontWeight: 700, marginTop: 2 }}>
+                      <div style={{ fontSize: 12, color: '#6366f1', fontWeight: 700, marginTop: 2 }}>
                         ₹{(b.price || 0).toLocaleString('en-IN')}/month
                         <span style={{ color: '#94a3b8', fontWeight: 400, marginLeft: 6 }}>• {(b.roomTypes || []).length} room types</span>
                       </div>
                     </div>
-                    <button onClick={() => openEditBuilding(b)} style={s.editBtn}>Edit</button>
-                    <button onClick={() => toggleBuilding(b)} style={{ ...s.toggleBtn, background: b.enabled ? '#fef3c7' : '#d1fae5', color: b.enabled ? '#92400e' : '#065f46' }}>
-                      {b.enabled ? 'Disable' : 'Enable'}
-                    </button>
-                    <button
-                      onClick={() => setExpandedBldId(expandedBldId === b.id ? null : b.id)}
-                      style={{ ...s.editBtn, background: expandedBldId === b.id ? '#6366f1' : '#e0e7ff', color: expandedBldId === b.id ? '#fff' : '#4338ca' }}
-                    >
-                      {expandedBldId === b.id ? 'Hide Rooms ▲' : 'Manage Rooms ▼'}
-                    </button>
-                    <button onClick={() => deleteBuilding(b.id)} style={s.delBtn}>Delete</button>
+                    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', alignItems: 'center' }}>
+                      <button onClick={() => openEditBuilding(b)} style={s.editBtn}>Edit</button>
+                      <button onClick={() => toggleBuilding(b)} style={{ ...s.toggleBtn, background: b.enabled ? '#fef3c7' : '#d1fae5', color: b.enabled ? '#92400e' : '#065f46' }}>
+                        {b.enabled ? 'Disable' : 'Enable'}
+                      </button>
+                      <button
+                        onClick={() => setExpandedBldId(expandedBldId === b.id ? null : b.id)}
+                        style={{ ...s.editBtn, background: expandedBldId === b.id ? '#6366f1' : '#e0e7ff', color: expandedBldId === b.id ? '#fff' : '#4338ca' }}
+                      >
+                        {expandedBldId === b.id ? 'Hide Rooms ▲' : 'Rooms ▼'}
+                      </button>
+                      <button onClick={() => deleteBuilding(b.id)} style={s.delBtn}>Delete</button>
+                    </div>
                   </div>
 
                   {/* Building photos row */}
@@ -406,11 +408,11 @@ export default function LocationsAdmin() {
                   {/* Room Types Panel (expanded) */}
                   {expandedBldId === b.id && (
                     <div style={{ borderTop: '1px solid #f1f5f9', padding: '16px 18px', background: '#fafbff' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8, marginBottom: 12 }}>
                         <span style={{ fontSize: 14, fontWeight: 700, color: '#1e293b' }}>
                           Room Types <span style={{ color: '#64748b', fontWeight: 400 }}>({(b.roomTypes || []).length})</span>
                         </span>
-                        <button onClick={() => openAddRoom(b.id)} style={{ ...s.addBldBtn, background: '#8b5cf6' }}>+ Add Room Type</button>
+                        <button onClick={() => openAddRoom(b.id)} style={{ ...s.addBldBtn, background: '#8b5cf6', flexShrink: 0 }}>+ Add Room Type</button>
                       </div>
 
                       {(b.roomTypes || []).length === 0 ? (
