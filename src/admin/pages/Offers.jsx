@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { authFetch } from '../api'
 import API_BASE from '../../config'
+import { PageLoader } from '../components/Spinner'
 
 export default function Offers() {
   const [offer, setOffer] = useState(null)
@@ -34,7 +35,7 @@ export default function Offers() {
     }
   }
 
-  if (!offer) return <div style={{ color: '#64748b' }}>Loading...</div>
+  if (!offer) return <PageLoader />
 
   return (
     <div>

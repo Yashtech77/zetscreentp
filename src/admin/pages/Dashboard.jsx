@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import API_BASE from '../../config'
+import Spinner from '../components/Spinner'
 
 export default function Dashboard() {
   const [stats, setStats] = useState({ locations: 0, gallery: 0, testimonials: 0, enquiries: 0, offerEnabled: false })
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const token = localStorage.getItem('token')
@@ -23,7 +25,7 @@ export default function Dashboard() {
         enquiries: Array.isArray(enquiries) ? enquiries.length : 0,
         offerEnabled: offers?.enabled || false,
       })
-    }).catch(() => {})
+    }).catch(() => {}).finally(() => setLoading(false))
   }, [])
 
   const cards = [
@@ -49,7 +51,7 @@ export default function Dashboard() {
       <p style={{ color: '#64748b', marginBottom: 32 }}>Welcome back! Here's an overview of your content.</p>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: 16, marginBottom: 40 }}>
-        {cards.map(card => (
+        {cards.map((card, i) => (
           <Link key={card.link} to={card.link} style={{ textDecoration: 'none' }}>
             <div style={{
               background: '#fff',
@@ -60,7 +62,13 @@ export default function Dashboard() {
               transition: 'box-shadow 0.15s',
             }}>
               <div style={{ fontSize: 24, marginBottom: 8 }}>{card.icon}</div>
-              <div style={{ fontSize: 28, fontWeight: 700, color: card.color }}>{card.value}</div>
+              {loading ? (
+                <div style={{ height: 36, display: 'flex', alignItems: 'center' }}>
+                  <Spinner size={22} color={card.color} />
+                </div>
+              ) : (
+                <div style={{ fontSize: 28, fontWeight: 700, color: card.color }}>{card.value}</div>
+              )}
               <div style={{ fontSize: 13, color: '#64748b', marginTop: 4 }}>{card.label}</div>
             </div>
           </Link>

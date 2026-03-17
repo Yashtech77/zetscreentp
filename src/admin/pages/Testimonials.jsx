@@ -1,16 +1,21 @@
 import { useState, useEffect } from 'react'
 import { authFetch } from '../api'
 import API_BASE from '../../config'
+import { PageLoader } from '../components/Spinner'
+import Spinner from '../components/Spinner'
 
 const blank = { name: '', role: '', rating: 5, text: '', date: '' }
 
 export default function TestimonialsAdmin() {
   const [reviews, setReviews] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [deleting, setDeleting] = useState(null)
   const [editing, setEditing] = useState(null)
   const [msg, setMsg] = useState('')
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/testimonials`).then(r => r.json()).then(setReviews).catch(() => {})
+    fetch(`${API_BASE}/api/testimonials`).then(r => r.json()).then(setReviews).catch(() => {}).finally(() => setLoading(false))
   }, [])
 
   const showMsg = (text) => { setMsg(text); setTimeout(() => setMsg(''), 3000) }
@@ -19,6 +24,7 @@ export default function TestimonialsAdmin() {
     const isNew = !editing.id
     const method = isNew ? 'POST' : 'PUT'
     const url = isNew ? '/api/testimonials' : `/api/testimonials/${editing.id}`
+    setSaving(true)
     try {
       const res = await authFetch(url, { method, body: JSON.stringify(editing) })
       if (!res.ok) throw new Error()
@@ -28,11 +34,14 @@ export default function TestimonialsAdmin() {
       showMsg('Saved!')
     } catch {
       showMsg('Error saving')
+    } finally {
+      setSaving(false)
     }
   }
 
   const handleDelete = async (id) => {
     if (!confirm('Delete this review?')) return
+    setDeleting(id)
     try {
       const res = await authFetch(`/api/testimonials/${id}`, { method: 'DELETE' })
       if (!res.ok) throw new Error()
@@ -40,6 +49,8 @@ export default function TestimonialsAdmin() {
       showMsg('Deleted')
     } catch {
       showMsg('Error deleting')
+    } finally {
+      setDeleting(null)
     }
   }
 
@@ -55,6 +66,7 @@ export default function TestimonialsAdmin() {
 
       {msg && <div style={successBar}>{msg}</div>}
 
+      {loading && <PageLoader />}
       <div style={{ display: 'grid', gap: 12 }}>
         {reviews.map(review => (
           <div key={review.id} style={card}>
@@ -74,7 +86,9 @@ export default function TestimonialsAdmin() {
               </div>
               <div style={{ display: 'flex', gap: 8 }}>
                 <button onClick={() => setEditing({ ...review })} style={editBtn}>Edit</button>
-                <button onClick={() => handleDelete(review.id)} style={delBtn}>Delete</button>
+                <button onClick={() => handleDelete(review.id)} disabled={deleting === review.id} style={{ ...delBtn, opacity: deleting === review.id ? 0.6 : 1 }}>
+                  {deleting === review.id ? 'Deleting...' : 'Delete'}
+                </button>
               </div>
             </div>
           </div>
@@ -107,9 +121,12 @@ export default function TestimonialsAdmin() {
                 style={{ ...inputStyle, resize: 'vertical' }}
               />
             </div>
-            <div style={{ marginTop: 24, display: 'flex', gap: 12 }}>
-              <button onClick={handleSave} style={saveBtn}>Save</button>
-              <button onClick={() => setEditing(null)} style={cancelBtn}>Cancel</button>
+            <div style={{ marginTop: 24, display: 'flex', gap: 12, alignItems: 'center' }}>
+              <button onClick={handleSave} disabled={saving} style={{ ...saveBtn, opacity: saving ? 0.7 : 1, display: 'flex', alignItems: 'center', gap: 8 }}>
+                {saving && <Spinner size={16} color="#fff" />}
+                {saving ? 'Saving...' : 'Save'}
+              </button>
+              <button onClick={() => setEditing(null)} disabled={saving} style={cancelBtn}>Cancel</button>
             </div>
           </div>
         </div>

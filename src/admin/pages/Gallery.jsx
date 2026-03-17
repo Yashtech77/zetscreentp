@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
 import { authFetchForm } from '../api'
 import API_BASE from '../../config'
+import { PageLoader } from '../components/Spinner'
 
 export default function GalleryAdmin() {
   const [images, setImages] = useState([])
+  const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [msg, setMsg] = useState('')
   const [dragOver, setDragOver] = useState(false)
@@ -11,7 +13,7 @@ export default function GalleryAdmin() {
   const fileRef = useRef()
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/gallery`).then(r => r.json()).then(setImages).catch(() => {})
+    fetch(`${API_BASE}/api/gallery`).then(r => r.json()).then(setImages).catch(() => {}).finally(() => setLoading(false))
   }, [])
 
   const showMsg = (text) => { setMsg(text); setTimeout(() => setMsg(''), 3000) }
@@ -194,7 +196,8 @@ export default function GalleryAdmin() {
         ))}
       </div>
 
-      {images.length === 0 && !uploading && (
+      {loading && <PageLoader />}
+      {!loading && images.length === 0 && (
         <div style={{ textAlign: 'center', color: '#94a3b8', padding: 40 }}>No images yet. Upload some!</div>
       )}
     </div>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { authFetch } from '../api'
+import { PageLoader } from '../components/Spinner'
 
 function fmt(iso) {
   if (!iso) return '—'
@@ -87,7 +88,7 @@ export default function Enquiries() {
       </div>
 
       {loading ? (
-        <p style={{ color: '#64748b' }}>Loading...</p>
+        <PageLoader />
       ) : filtered.length === 0 ? (
         <div style={emptyBox}>
           <p style={{ color: '#94a3b8', fontSize: 15 }}>No enquiries yet.</p>

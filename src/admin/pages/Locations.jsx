@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { authFetch, authFetchForm } from '../api'
 import API_BASE from '../../config'
+import { PageLoader } from '../components/Spinner'
 
 // Detect short links that can't be embedded
 function isShortLink(url) {
@@ -94,6 +95,7 @@ const autoSlug = (name) => name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-
 
 export default function LocationsAdmin() {
   const [locations, setLocations] = useState([])
+  const [loading, setLoading] = useState(true)
   const [activeLocId, setActiveLocId] = useState(null)
   const [expandedBldId, setExpandedBldId] = useState(null) // which building's rooms are expanded
   const [msg, setMsg] = useState('')
@@ -116,7 +118,8 @@ export default function LocationsAdmin() {
 
   const showMsg = (text) => { setMsg(text); setTimeout(() => setMsg(''), 3000) }
 
-  const load = () => {
+  const load = (showLoader = false) => {
+    if (showLoader) setLoading(true)
     authFetch('/api/locations/all')
       .then(r => r.json())
       .then(data => {
@@ -124,9 +127,10 @@ export default function LocationsAdmin() {
         if (!activeLocId && data.length > 0) setActiveLocId(data[0].id)
       })
       .catch(() => {})
+      .finally(() => setLoading(false))
   }
 
-  useEffect(() => { load() }, [])
+  useEffect(() => { load(true) }, [])
 
   const activeLoc = locations.find(l => l.id === activeLocId)
 
@@ -464,7 +468,8 @@ export default function LocationsAdmin() {
         </div>
       )}
 
-      {locations.length === 0 && (
+      {loading && <PageLoader />}
+      {!loading && locations.length === 0 && (
         <div style={{ textAlign: 'center', color: '#94a3b8', padding: 60 }}>No locations yet. Click "+ Add Location".</div>
       )}
 

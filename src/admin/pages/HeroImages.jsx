@@ -1,9 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
 import { authFetchForm } from '../api'
 import API_BASE from '../../config'
+import { PageLoader } from '../components/Spinner'
 
 export default function HeroImages() {
   const [images, setImages] = useState([])
+  const [loading, setLoading] = useState(true)
   const [uploading, setUploading] = useState(false)
   const [msg, setMsg] = useState('')
   const [dragOver, setDragOver] = useState(false)
@@ -11,7 +13,7 @@ export default function HeroImages() {
   const fileRef = useRef()
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/hero-images`).then(r => r.json()).then(setImages).catch(() => {})
+    fetch(`${API_BASE}/api/hero-images`).then(r => r.json()).then(setImages).catch(() => {}).finally(() => setLoading(false))
   }, [])
 
   const showMsg = (text) => { setMsg(text); setTimeout(() => setMsg(''), 3000) }
@@ -158,7 +160,8 @@ export default function HeroImages() {
         ))}
       </div>
 
-      {images.length === 0 && (
+      {loading && <PageLoader />}
+      {!loading && images.length === 0 && (
         <div style={{ textAlign: 'center', color: '#94a3b8', padding: 40 }}>
           No hero images yet. Upload building photos to start the carousel.
         </div>

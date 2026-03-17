@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { authFetch } from '../api'
 import API_BASE from '../../config'
+import { PageLoader } from '../components/Spinner'
 
 export default function ContactAdmin() {
   const [contact, setContact] = useState(null)
@@ -49,7 +50,7 @@ export default function ContactAdmin() {
     setContact(c => ({ ...c, branches: c.branches.filter((_, i) => i !== idx) }))
   }
 
-  if (!contact) return <div style={{ color: '#64748b' }}>Loading...</div>
+  if (!contact) return <PageLoader />
 
   return (
     <div>
