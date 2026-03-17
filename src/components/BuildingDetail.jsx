@@ -310,7 +310,7 @@ export default function BuildingDetail() {
         </div>
       </div>
       <Footer />
-      <FloatingWhatsApp />
+      <FloatingWhatsApp phoneNumber={phoneNumber} />
       {showModal && (
         <EnquiryModal
           onClose={() => setShowModal(false)}

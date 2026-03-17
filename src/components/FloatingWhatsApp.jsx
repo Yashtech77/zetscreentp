@@ -2,15 +2,17 @@ import { useState, useEffect } from 'react'
 import API_BASE from '../config'
 import EnquiryModal from './EnquiryModal'
 
-function FloatingWhatsApp() {
+function FloatingWhatsApp({ phoneNumber: propPhoneNumber }) {
   const [contact, setContact] = useState(null)
   const [showModal, setShowModal] = useState(false)
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/contact`).then(r => r.json()).then(setContact).catch(() => {})
-  }, [])
+    if (!propPhoneNumber) {
+      fetch(`${API_BASE}/api/contact`).then(r => r.json()).then(setContact).catch(() => {})
+    }
+  }, [propPhoneNumber])
 
-  const phoneNumber = contact?.whatsapp || '919175916383'
+  const phoneNumber = propPhoneNumber || contact?.whatsapp || '919175916383'
 
   return (
     <>
