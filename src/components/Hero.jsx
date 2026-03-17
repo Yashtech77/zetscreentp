@@ -77,7 +77,7 @@ function Hero() {
     {
       title: 'Safe & Secure',
       subtitle: '24/7 security & CCTV',
-      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=200&fit=crop&crop=center&q=80'
+      image: 'https://images.unsplash.com/photo-1589935447067-5531094415d1?w=400&h=200&fit=crop&crop=center&q=80'
     }
   ]
 
