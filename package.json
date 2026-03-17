@@ -8,6 +8,7 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
+    "postinstall": "cd backend && npm install",
     "start": "cd backend && node server.js",
     "build:full": "vite build && cd backend && npm install"
   },
