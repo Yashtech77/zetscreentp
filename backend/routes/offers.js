@@ -11,7 +11,7 @@ function rowToOffer(row) {
     subtitle: row.subtitle,
     discount: row.discount,
     discountPercent: row.discount_percent,
-    validUntil: row.valid_until ? row.valid_until.toISOString().split('T')[0] : null,
+    validUntil: row.valid_until ? String(row.valid_until).split('T')[0] : null,
     bgColor: row.bg_color,
   };
 }

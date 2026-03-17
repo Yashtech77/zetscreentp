@@ -9,6 +9,10 @@ router.get('/', async (req, res) => {
     const [rows] = await db.query('SELECT * FROM contact WHERE id = 1');
     if (!rows.length) return res.json({});
     const row = rows[0];
+    const parseJSON = (val, fallback) => {
+      if (Array.isArray(val) || (val && typeof val === 'object')) return val;
+      try { return JSON.parse(val); } catch { return fallback; }
+    };
     res.json({
       phone: row.phone,
       whatsapp: row.whatsapp,
@@ -16,8 +20,8 @@ router.get('/', async (req, res) => {
       address: row.address,
       addressFull: row.address_full,
       hours: row.hours,
-      stats: row.stats || [],
-      branches: row.branches || [],
+      stats: parseJSON(row.stats, []),
+      branches: parseJSON(row.branches, []),
     });
   } catch (err) {
     console.error(err);
