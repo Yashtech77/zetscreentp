@@ -1,53 +1,61 @@
 const express = require('express');
-const router = express.Router();
-const fs = require('fs');
-const path = require('path');
 const authMiddleware = require('../middleware/auth');
+const db = require('../db');
 
-const DATA_FILE = path.join(__dirname, '../data/enquiries.json');
+const router = express.Router();
 
-function read() {
-  try { return JSON.parse(fs.readFileSync(DATA_FILE, 'utf8')); }
-  catch { return []; }
-}
-
-function write(data) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
-}
-
-// POST /api/enquiries — public, called from frontend before WhatsApp redirect
-router.post('/', (req, res) => {
-  const { name, mobile, occupation, locationName, buildingName, roomName, message } = req.body;
-  if (!name || !mobile) return res.status(400).json({ error: 'Name and mobile are required' });
-
-  const enquiries = read();
-  const entry = {
-    id: Date.now(),
-    name: name.trim(),
-    mobile: mobile.trim(),
-    occupation: occupation?.trim() || '',
-    locationName: locationName || '',
-    buildingName: buildingName || '',
-    roomName: roomName || '',
-    message: message || '',
-    createdAt: new Date().toISOString(),
+function rowToEnquiry(row) {
+  return {
+    id: row.id,
+    name: row.name,
+    mobile: row.mobile,
+    occupation: row.occupation,
+    locationName: row.location_name,
+    buildingName: row.building_name,
+    roomName: row.room_name,
+    message: row.message,
+    createdAt: row.created_at,
   };
-  enquiries.unshift(entry);
-  write(enquiries);
-  res.json(entry);
+}
+
+// POST /api/enquiries — public
+router.post('/', async (req, res) => {
+  try {
+    const { name, mobile, occupation, locationName, buildingName, roomName, message } = req.body;
+    if (!name || !mobile) return res.status(400).json({ error: 'Name and mobile are required' });
+    const id = Date.now();
+    await db.query(
+      'INSERT INTO enquiries (id, name, mobile, occupation, location_name, building_name, room_name, message, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [id, name.trim(), mobile.trim(), occupation?.trim() || '', locationName || '', buildingName || '', roomName || '', message || '', new Date()]
+    );
+    const [rows] = await db.query('SELECT * FROM enquiries WHERE id = ?', [id]);
+    res.json(rowToEnquiry(rows[0]));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
 // GET /api/enquiries — admin only
-router.get('/', authMiddleware, (req, res) => {
-  res.json(read());
+router.get('/', authMiddleware, async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM enquiries ORDER BY created_at DESC');
+    res.json(rows.map(rowToEnquiry));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
 // DELETE /api/enquiries/:id — admin only
-router.delete('/:id', authMiddleware, (req, res) => {
-  const enquiries = read();
-  const updated = enquiries.filter(e => e.id !== parseInt(req.params.id));
-  write(updated);
-  res.json({ ok: true });
+router.delete('/:id', authMiddleware, async (req, res) => {
+  try {
+    await db.query('DELETE FROM enquiries WHERE id = ?', [req.params.id]);
+    res.json({ ok: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
 module.exports = router;

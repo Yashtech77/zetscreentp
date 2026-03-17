@@ -3,9 +3,9 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const authMiddleware = require('../middleware/auth');
+const db = require('../db');
 
 const router = express.Router();
-const dataFile = path.join(__dirname, '../data/gallery.json');
 const uploadsDir = path.join(__dirname, '../uploads');
 
 const storage = multer.diskStorage({
@@ -17,37 +17,45 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } });
 
-const readGallery = () => JSON.parse(fs.readFileSync(dataFile, 'utf8'));
-const writeGallery = (data) => fs.writeFileSync(dataFile, JSON.stringify(data, null, 2));
-
-router.get('/', (req, res) => {
-  res.json(readGallery());
+router.get('/', async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM gallery ORDER BY id');
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
-router.post('/', authMiddleware, upload.single('image'), (req, res) => {
-  if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-  const gallery = readGallery();
-  const newItem = {
-    id: Date.now(),
-    filename: req.file.filename,
-    url: `/uploads/${req.file.filename}`,
-    title: req.body.title || req.file.originalname,
-    category: req.body.category || 'room',
-  };
-  gallery.push(newItem);
-  writeGallery(gallery);
-  res.status(201).json(newItem);
+router.post('/', authMiddleware, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+    const id = Date.now();
+    const url = `/uploads/${req.file.filename}`;
+    await db.query(
+      'INSERT INTO gallery (id, filename, url, title, category) VALUES (?, ?, ?, ?, ?)',
+      [id, req.file.filename, url, req.body.title || req.file.originalname, req.body.category || 'room']
+    );
+    const [rows] = await db.query('SELECT * FROM gallery WHERE id = ?', [id]);
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
-router.delete('/:id', authMiddleware, (req, res) => {
-  const gallery = readGallery();
-  const item = gallery.find(g => g.id === parseInt(req.params.id));
-  if (!item) return res.status(404).json({ error: 'Image not found' });
-  const filePath = path.join(uploadsDir, item.filename);
-  if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-  const filtered = gallery.filter(g => g.id !== parseInt(req.params.id));
-  writeGallery(filtered);
-  res.json({ success: true });
+router.delete('/:id', authMiddleware, async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM gallery WHERE id = ?', [req.params.id]);
+    if (!rows.length) return res.status(404).json({ error: 'Image not found' });
+    const filePath = path.join(uploadsDir, rows[0].filename);
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    await db.query('DELETE FROM gallery WHERE id = ?', [req.params.id]);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
 module.exports = router;

@@ -3,9 +3,9 @@ const fs = require('fs');
 const path = require('path');
 const multer = require('multer');
 const authMiddleware = require('../middleware/auth');
+const db = require('../db');
 
 const router = express.Router();
-const dataFile = path.join(__dirname, '../data/hero-images.json');
 const uploadsDir = path.join(__dirname, '../uploads');
 
 const storage = multer.diskStorage({
@@ -17,36 +17,45 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } });
 
-const read = () => {
-  try { return JSON.parse(fs.readFileSync(dataFile, 'utf8')); }
-  catch { return []; }
-};
-const write = (data) => fs.writeFileSync(dataFile, JSON.stringify(data, null, 2));
-
-router.get('/', (req, res) => res.json(read()));
-
-router.post('/', authMiddleware, upload.single('image'), (req, res) => {
-  if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-  const images = read();
-  const item = {
-    id: Date.now(),
-    filename: req.file.filename,
-    url: `/uploads/${req.file.filename}`,
-    title: req.body.title || req.file.originalname,
-  };
-  images.push(item);
-  write(images);
-  res.status(201).json(item);
+router.get('/', async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM hero_images ORDER BY id');
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
-router.delete('/:id', authMiddleware, (req, res) => {
-  const images = read();
-  const item = images.find(i => i.id === parseInt(req.params.id));
-  if (!item) return res.status(404).json({ error: 'Not found' });
-  const filePath = path.join(uploadsDir, item.filename);
-  if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
-  write(images.filter(i => i.id !== parseInt(req.params.id)));
-  res.json({ success: true });
+router.post('/', authMiddleware, upload.single('image'), async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+    const id = Date.now();
+    const url = `/uploads/${req.file.filename}`;
+    await db.query(
+      'INSERT INTO hero_images (id, filename, url, title) VALUES (?, ?, ?, ?)',
+      [id, req.file.filename, url, req.body.title || req.file.originalname]
+    );
+    const [rows] = await db.query('SELECT * FROM hero_images WHERE id = ?', [id]);
+    res.status(201).json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+router.delete('/:id', authMiddleware, async (req, res) => {
+  try {
+    const [rows] = await db.query('SELECT * FROM hero_images WHERE id = ?', [req.params.id]);
+    if (!rows.length) return res.status(404).json({ error: 'Not found' });
+    const filePath = path.join(uploadsDir, rows[0].filename);
+    if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+    await db.query('DELETE FROM hero_images WHERE id = ?', [req.params.id]);
+    res.json({ success: true });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
 module.exports = router;
