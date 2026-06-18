@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react'
 import API_BASE from '../config'
 import EnquiryModal from './EnquiryModal'
+import { fetchJsonObject } from '../utils/fetchers'
 
 function About() {
   const [contact, setContact] = useState(null)
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/contact`).then(r => r.json()).then(setContact).catch(() => {})
+    fetchJsonObject(`${API_BASE}/api/contact`).then(setContact)
   }, [])
 
   const phoneNumber = contact?.whatsapp || '919175916383'
   const address = contact?.address || 'Swapanagari Society, Akurdi, Pune - 411033'
   const phone = contact?.phone || '+91 91759 16383'
-  const stats = contact?.stats || [
+  const stats = Array.isArray(contact?.stats) ? contact.stats : [
     { number: '2000+', label: 'Happy Residents' },
     { number: '5+', label: 'Years Experience' },
     { number: '24/7', label: 'Support Available' },

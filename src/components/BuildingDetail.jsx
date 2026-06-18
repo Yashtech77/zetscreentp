@@ -5,6 +5,7 @@ import Navbar from './Navbar'
 import Footer from './Footer'
 import FloatingWhatsApp from './FloatingWhatsApp'
 import EnquiryModal from './EnquiryModal'
+import { fetchJsonArray, fetchJsonObject } from '../utils/fetchers'
 
 const TYPE_CONFIG = {
   boys:     { label: 'Boys PG',   color: '#3b82f6', bg: '#eff6ff' },
@@ -157,11 +158,12 @@ export default function BuildingDetail() {
 
   useEffect(() => {
     Promise.all([
-      fetch(`${API_BASE}/api/locations`).then(r => r.json()),
-      fetch(`${API_BASE}/api/contact`).then(r => r.json()).catch(() => ({})),
-      fetch(`${API_BASE}/api/offers`).then(r => r.json()).catch(() => null),
+      fetchJsonArray(`${API_BASE}/api/locations`),
+      fetchJsonObject(`${API_BASE}/api/contact`, {}),
+      fetchJsonObject(`${API_BASE}/api/offers`, null),
     ]).then(([locations, contactData, offerData]) => {
-      const loc = locations.find(l => l.slug === locationSlug)
+      const safeLocations = Array.isArray(locations) ? locations : []
+      const loc = safeLocations.find(l => l.slug === locationSlug)
       const bld = loc?.buildings?.find(b => b.id === parseInt(buildingId))
       setLocation(loc || null)
       setBuilding(bld || null)

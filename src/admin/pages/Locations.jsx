@@ -123,8 +123,9 @@ export default function LocationsAdmin() {
     authFetch('/api/locations/all')
       .then(r => r.json())
       .then(data => {
-        setLocations(data)
-        if (!activeLocId && data.length > 0) setActiveLocId(data[0].id)
+        const nextLocations = Array.isArray(data) ? data : []
+        setLocations(nextLocations)
+        if (!activeLocId && nextLocations.length > 0) setActiveLocId(nextLocations[0].id)
       })
       .catch(() => {})
       .finally(() => setLoading(false))

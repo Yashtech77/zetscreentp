@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import API_BASE from '../config'
+import { fetchJsonArray } from '../utils/fetchers'
 
 function Testimonials() {
   const [reviews, setReviews] = useState([])
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/testimonials`).then(r => r.json()).then(setReviews).catch(() => {})
+    fetchJsonArray(`${API_BASE}/api/testimonials`).then(setReviews)
   }, [])
 
   const renderStars = (rating) => {

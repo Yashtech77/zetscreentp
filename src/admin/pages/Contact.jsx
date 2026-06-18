@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { authFetch } from '../api'
 import API_BASE from '../../config'
 import { PageLoader } from '../components/Spinner'
+import { fetchJsonObject } from '../../utils/fetchers'
 
 export default function ContactAdmin() {
   const [contact, setContact] = useState(null)
@@ -9,7 +10,7 @@ export default function ContactAdmin() {
   const [msg, setMsg] = useState('')
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/contact`).then(r => r.json()).then(setContact).catch(() => {})
+    fetchJsonObject(`${API_BASE}/api/contact`).then(setContact)
   }, [])
 
   const handleSave = async () => {
@@ -31,24 +32,27 @@ export default function ContactAdmin() {
   const updateField = (field, value) => setContact(c => ({ ...c, [field]: value }))
 
   const updateStat = (idx, key, value) => {
-    const stats = [...(contact.stats || [])]
+    const stats = Array.isArray(contact.stats) ? [...contact.stats] : []
     stats[idx] = { ...stats[idx], [key]: value }
     setContact(c => ({ ...c, stats }))
   }
 
   const updateBranch = (idx, key, value) => {
-    const branches = [...(contact.branches || [])]
+    const branches = Array.isArray(contact.branches) ? [...contact.branches] : []
     branches[idx] = { ...branches[idx], [key]: value }
     setContact(c => ({ ...c, branches }))
   }
 
   const addBranch = () => {
-    setContact(c => ({ ...c, branches: [...(c.branches || []), { name: '', area: '', address: '', phone: '' }] }))
+    setContact(c => ({ ...c, branches: [...(Array.isArray(c.branches) ? c.branches : []), { name: '', area: '', address: '', phone: '' }] }))
   }
 
   const removeBranch = (idx) => {
-    setContact(c => ({ ...c, branches: c.branches.filter((_, i) => i !== idx) }))
+    setContact(c => ({ ...c, branches: (Array.isArray(c.branches) ? c.branches : []).filter((_, i) => i !== idx) }))
   }
+
+  const stats = Array.isArray(contact.stats) ? contact.stats : []
+  const branches = Array.isArray(contact.branches) ? contact.branches : []
 
   if (!contact) return <PageLoader />
 
@@ -85,7 +89,7 @@ export default function ContactAdmin() {
         <section style={card}>
           <h2 style={sectionTitle}>Stats</h2>
           <div style={{ display: 'grid', gap: 12 }}>
-            {(contact.stats || []).map((stat, idx) => (
+            {stats.map((stat, idx) => (
               <div key={idx} style={{ display: 'flex', gap: 12, alignItems: 'flex-end' }}>
                 <div style={{ flex: '0 0 120px' }}>
                   <Field label={idx === 0 ? 'Number' : ''} value={stat.number} onChange={v => updateStat(idx, 'number', v)} placeholder="2000+" />
@@ -104,7 +108,7 @@ export default function ContactAdmin() {
             <button onClick={addBranch} style={addBtn}>+ Add Branch</button>
           </div>
           <div style={{ display: 'grid', gap: 16 }}>
-            {(contact.branches || []).map((branch, idx) => (
+            {branches.map((branch, idx) => (
               <div key={idx} style={{ background: '#f8fafc', borderRadius: 8, padding: 16, position: 'relative' }}>
                 <button
                   onClick={() => removeBranch(idx)}

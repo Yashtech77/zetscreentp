@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { authFetchForm } from '../api'
 import API_BASE from '../../config'
 import { PageLoader } from '../components/Spinner'
+import { fetchJsonArray } from '../../utils/fetchers'
 
 export default function GalleryAdmin() {
   const [images, setImages] = useState([])
@@ -13,7 +14,7 @@ export default function GalleryAdmin() {
   const fileRef = useRef()
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/gallery`).then(r => r.json()).then(setImages).catch(() => {}).finally(() => setLoading(false))
+    fetchJsonArray(`${API_BASE}/api/gallery`).then(setImages).finally(() => setLoading(false))
   }, [])
 
   const showMsg = (text) => { setMsg(text); setTimeout(() => setMsg(''), 3000) }

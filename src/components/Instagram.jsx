@@ -11,14 +11,19 @@ export default function Instagram() {
         </div>
 
         <div className="instagram-widget-wrap">
-          {/* SnapWidget */}
           <iframe
             src="https://snapwidget.com/embed/1118698"
             className="snapwidget-widget"
-            allowtransparency="true"
+            allowTransparency="true"
             frameBorder="0"
             scrolling="no"
-            style={{ border: 'none', overflow: 'hidden', width: '100%', height: '160px' }}
+            style={{
+              border: 'none',
+              overflow: 'hidden',
+              width: '100%',
+              maxWidth: '480px',
+              height: '160px',
+            }}
             title="Posts from Instagram"
           />
         </div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import API_BASE from '../config'
 import EnquiryModal from './EnquiryModal'
+import { fetchJsonArray, fetchJsonObject } from '../utils/fetchers'
 
 const TYPE_CONFIG = {
   boys:     { label: 'Boys PG',   color: '#2563eb', gradient: 'linear-gradient(135deg, #60a5fa 0%, #1d4ed8 100%)' },
@@ -155,14 +156,14 @@ function Location() {
   const [activeOffer, setActiveOffer] = useState(null)
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/locations`).then(r => r.json()).then(setLocations).catch(() => {})
-    fetch(`${API_BASE}/api/contact`).then(r => r.json()).then(setContact).catch(() => {})
-    fetch(`${API_BASE}/api/offers`).then(r => r.json()).then(offer => {
+    fetchJsonArray(`${API_BASE}/api/locations`).then(setLocations)
+    fetchJsonObject(`${API_BASE}/api/contact`).then(setContact)
+    fetchJsonObject(`${API_BASE}/api/offers`, null).then(offer => {
       if (offer?.enabled && offer?.discountPercent > 0) {
         const isValid = !offer.validUntil || new Date(offer.validUntil) >= new Date()
         setActiveOffer(isValid ? offer : null)
       }
-    }).catch(() => {})
+    })
   }, [])
 
   const globalWhatsapp = contact?.whatsapp || '919175916383'

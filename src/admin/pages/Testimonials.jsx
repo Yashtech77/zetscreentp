@@ -3,6 +3,7 @@ import { authFetch } from '../api'
 import API_BASE from '../../config'
 import { PageLoader } from '../components/Spinner'
 import Spinner from '../components/Spinner'
+import { fetchJsonArray } from '../../utils/fetchers'
 
 const blank = { name: '', role: '', rating: 5, text: '', date: '' }
 
@@ -15,7 +16,7 @@ export default function TestimonialsAdmin() {
   const [msg, setMsg] = useState('')
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/testimonials`).then(r => r.json()).then(setReviews).catch(() => {}).finally(() => setLoading(false))
+    fetchJsonArray(`${API_BASE}/api/testimonials`).then(setReviews).finally(() => setLoading(false))
   }, [])
 
   const showMsg = (text) => { setMsg(text); setTimeout(() => setMsg(''), 3000) }

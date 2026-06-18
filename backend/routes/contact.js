@@ -1,31 +1,71 @@
 const express = require('express');
+const fs = require('fs');
+const path = require('path');
 const authMiddleware = require('../middleware/auth');
 const db = require('../db');
 
 const router = express.Router();
+const fallbackFile = path.join(__dirname, '../data/contact.json');
+
+function parseJSON(val, fallback) {
+  if (Array.isArray(val) || (val && typeof val === 'object')) return val;
+  try {
+    return JSON.parse(val);
+  } catch {
+    return fallback;
+  }
+}
+
+function loadFallbackContact() {
+  try {
+    const raw = fs.readFileSync(fallbackFile, 'utf8');
+    const contact = JSON.parse(raw);
+    return {
+      phone: contact.phone || '',
+      whatsapp: contact.whatsapp || '',
+      email: contact.email || '',
+      address: contact.address || '',
+      addressFull: contact.addressFull || '',
+      hours: contact.hours || '',
+      stats: Array.isArray(contact.stats) ? contact.stats : [],
+      branches: Array.isArray(contact.branches) ? contact.branches : [],
+    };
+  } catch {
+    return {
+      phone: '',
+      whatsapp: '',
+      email: '',
+      address: '',
+      addressFull: '',
+      hours: '',
+      stats: [],
+      branches: [],
+    };
+  }
+}
+
+function rowToContact(row) {
+  if (!row) return loadFallbackContact();
+  return {
+    phone: row.phone || '',
+    whatsapp: row.whatsapp || '',
+    email: row.email || '',
+    address: row.address || '',
+    addressFull: row.address_full || '',
+    hours: row.hours || '',
+    stats: parseJSON(row.stats, []),
+    branches: parseJSON(row.branches, []),
+  };
+}
 
 router.get('/', async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM contact WHERE id = 1');
-    if (!rows.length) return res.json({});
-    const row = rows[0];
-    const parseJSON = (val, fallback) => {
-      if (Array.isArray(val) || (val && typeof val === 'object')) return val;
-      try { return JSON.parse(val); } catch { return fallback; }
-    };
-    res.json({
-      phone: row.phone,
-      whatsapp: row.whatsapp,
-      email: row.email,
-      address: row.address,
-      addressFull: row.address_full,
-      hours: row.hours,
-      stats: parseJSON(row.stats, []),
-      branches: parseJSON(row.branches, []),
-    });
+    if (!rows.length) return res.json(loadFallbackContact());
+    res.json(rowToContact(rows[0]));
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Database error' });
+    res.json(loadFallbackContact());
   }
 });
 
@@ -60,12 +100,7 @@ router.put('/', authMiddleware, async (req, res) => {
       ]
     );
     const [updated] = await db.query('SELECT * FROM contact WHERE id = 1');
-    const r = updated[0];
-    res.json({
-      phone: r.phone, whatsapp: r.whatsapp, email: r.email,
-      address: r.address, addressFull: r.address_full, hours: r.hours,
-      stats: r.stats || [], branches: r.branches || [],
-    });
+    res.json(rowToContact(updated[0]));
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Database error' });

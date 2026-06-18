@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import API_BASE from '../config'
+import { fetchJsonArray } from '../utils/fetchers'
 
 function Gallery() {
   const [images, setImages] = useState([])
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/gallery`).then(r => r.json()).then(setImages).catch(() => {})
+    fetchJsonArray(`${API_BASE}/api/gallery`).then(setImages)
   }, [])
 
   return (

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { authFetch } from '../api'
 import API_BASE from '../../config'
+import { fetchJsonObject } from '../../utils/fetchers'
 import { PageLoader } from '../components/Spinner'
 
 export default function Offers() {
@@ -9,7 +10,7 @@ export default function Offers() {
   const [msg, setMsg] = useState('')
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/offers`).then(r => r.json()).then(setOffer).catch(() => {})
+    fetchJsonObject(`${API_BASE}/api/offers`, null).then(setOffer)
   }, [])
 
   const handleChange = (field, value) => {

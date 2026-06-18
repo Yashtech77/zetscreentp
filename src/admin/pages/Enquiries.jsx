@@ -20,7 +20,7 @@ export default function Enquiries() {
   const load = () => {
     authFetch('/api/enquiries')
       .then(r => r.json())
-      .then(data => { setEnquiries(data); setLoading(false) })
+      .then(data => { setEnquiries(Array.isArray(data) ? data : []); setLoading(false) })
       .catch(() => setLoading(false))
   }
 

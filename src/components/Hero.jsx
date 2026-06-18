@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import buildingImg from '../assets/building.jpeg'
 import EnquiryModal from './EnquiryModal'
 import API_BASE from '../config'
+import { fetchJsonArray } from '../utils/fetchers'
 
 function HeroCarousel({ images }) {
   const [current, setCurrent] = useState(0)
@@ -53,14 +54,12 @@ function Hero() {
   const [heroImages, setHeroImages] = useState([])
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/hero-images`)
-      .then(r => r.json())
+    fetchJsonArray(`${API_BASE}/api/hero-images`)
       .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
+        if (data.length > 0) {
           setHeroImages(data.map(img => img.url.startsWith('/') ? `${API_BASE}${img.url}` : img.url))
         }
       })
-      .catch(() => {})
   }, [])
 
   const features = [

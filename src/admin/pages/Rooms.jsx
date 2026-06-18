@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { authFetch } from '../api'
 import API_BASE from '../../config'
+import { fetchJsonArray } from '../../utils/fetchers'
 
 const blankRoom = { type: '', originalPrice: '', price: '', period: '/month', popular: false, featuresText: '' }
 
@@ -10,7 +11,7 @@ export default function RoomsAdmin() {
   const [msg, setMsg] = useState('')
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/rooms`).then(r => r.json()).then(setRooms).catch(() => {})
+    fetchJsonArray(`${API_BASE}/api/rooms`).then(setRooms)
   }, [])
 
   const showMsg = (text) => { setMsg(text); setTimeout(() => setMsg(''), 3000) }

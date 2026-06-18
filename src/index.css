@@ -2638,6 +2638,8 @@ a.loc-contact-value:hover { color: var(--color-primary); }
 }
 
 .instagram-widget-wrap {
+  display: flex;
+  justify-content: center;
   border-radius: var(--radius-lg);
   overflow: hidden;
   background: #fff;
@@ -2650,6 +2652,7 @@ a.loc-contact-value:hover { color: var(--color-primary); }
 .instagram-widget-wrap iframe {
   display: block;
   width: 100% !important;
+  max-width: 480px;
 }
 
 .instagram-cta {

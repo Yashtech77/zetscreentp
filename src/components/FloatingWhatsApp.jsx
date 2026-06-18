@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import API_BASE from '../config'
 import EnquiryModal from './EnquiryModal'
+import { fetchJsonObject } from '../utils/fetchers'
 
 function FloatingWhatsApp({ phoneNumber: propPhoneNumber }) {
   const [contact, setContact] = useState(null)
@@ -8,7 +9,7 @@ function FloatingWhatsApp({ phoneNumber: propPhoneNumber }) {
 
   useEffect(() => {
     if (!propPhoneNumber) {
-      fetch(`${API_BASE}/api/contact`).then(r => r.json()).then(setContact).catch(() => {})
+      fetchJsonObject(`${API_BASE}/api/contact`).then(setContact)
     }
   }, [propPhoneNumber])
 

@@ -1,15 +1,13 @@
 import { useState, useEffect } from 'react'
 import API_BASE from '../config'
+import { fetchJsonObject } from '../utils/fetchers'
 
 const NewYearBanner = () => {
   const [isVisible, setIsVisible] = useState(true)
   const [offer, setOffer] = useState(null)
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/offers`)
-      .then(r => r.json())
-      .then(setOffer)
-      .catch(() => {})
+    fetchJsonObject(`${API_BASE}/api/offers`, null).then(setOffer)
   }, [])
 
   if (!isVisible) return null

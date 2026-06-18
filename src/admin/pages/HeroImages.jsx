@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { authFetchForm } from '../api'
 import API_BASE from '../../config'
 import { PageLoader } from '../components/Spinner'
+import { fetchJsonArray } from '../../utils/fetchers'
 
 export default function HeroImages() {
   const [images, setImages] = useState([])
@@ -13,7 +14,7 @@ export default function HeroImages() {
   const fileRef = useRef()
 
   useEffect(() => {
-    fetch(`${API_BASE}/api/hero-images`).then(r => r.json()).then(setImages).catch(() => {}).finally(() => setLoading(false))
+    fetchJsonArray(`${API_BASE}/api/hero-images`).then(setImages).finally(() => setLoading(false))
   }, [])
 
   const showMsg = (text) => { setMsg(text); setTimeout(() => setMsg(''), 3000) }
