@@ -4,13 +4,40 @@ import API_BASE from '../../config'
 import { PageLoader } from '../components/Spinner'
 import { fetchJsonObject } from '../../utils/fetchers'
 
+const CONTACT_DEFAULT = {
+  phone: '',
+  whatsapp: '',
+  email: '',
+  address: '',
+  addressFull: '',
+  hours: '',
+  stats: [],
+  branches: [],
+}
+
 export default function ContactAdmin() {
-  const [contact, setContact] = useState(null)
+  const [contact, setContact] = useState(CONTACT_DEFAULT)
   const [saving, setSaving] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [msg, setMsg] = useState('')
 
   useEffect(() => {
-    fetchJsonObject(`${API_BASE}/api/contact`).then(setContact)
+    let alive = true
+
+    fetchJsonObject(`${API_BASE}/api/contact`, CONTACT_DEFAULT).then(data => {
+      if (!alive) return
+      setContact({
+        ...CONTACT_DEFAULT,
+        ...data,
+        stats: Array.isArray(data?.stats) ? data.stats : [],
+        branches: Array.isArray(data?.branches) ? data.branches : [],
+      })
+      setLoading(false)
+    })
+
+    return () => {
+      alive = false
+    }
   }, [])
 
   const handleSave = async () => {
@@ -32,15 +59,19 @@ export default function ContactAdmin() {
   const updateField = (field, value) => setContact(c => ({ ...c, [field]: value }))
 
   const updateStat = (idx, key, value) => {
-    const stats = Array.isArray(contact.stats) ? [...contact.stats] : []
-    stats[idx] = { ...stats[idx], [key]: value }
-    setContact(c => ({ ...c, stats }))
+    setContact(c => {
+      const stats = Array.isArray(c.stats) ? [...c.stats] : []
+      stats[idx] = { ...(stats[idx] || {}), [key]: value }
+      return { ...c, stats }
+    })
   }
 
   const updateBranch = (idx, key, value) => {
-    const branches = Array.isArray(contact.branches) ? [...contact.branches] : []
-    branches[idx] = { ...branches[idx], [key]: value }
-    setContact(c => ({ ...c, branches }))
+    setContact(c => {
+      const branches = Array.isArray(c.branches) ? [...c.branches] : []
+      branches[idx] = { ...(branches[idx] || {}), [key]: value }
+      return { ...c, branches }
+    })
   }
 
   const addBranch = () => {
@@ -51,10 +82,10 @@ export default function ContactAdmin() {
     setContact(c => ({ ...c, branches: (Array.isArray(c.branches) ? c.branches : []).filter((_, i) => i !== idx) }))
   }
 
-  const stats = Array.isArray(contact.stats) ? contact.stats : []
-  const branches = Array.isArray(contact.branches) ? contact.branches : []
+  const stats = Array.isArray(contact?.stats) ? contact.stats : []
+  const branches = Array.isArray(contact?.branches) ? contact.branches : []
 
-  if (!contact) return <PageLoader />
+  if (loading) return <PageLoader />
 
   return (
     <div>
