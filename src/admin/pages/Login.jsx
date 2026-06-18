@@ -1,14 +1,49 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate, Navigate } from 'react-router-dom'
-import { login, isLoggedIn } from '../api'
+import { login, authFetch, logout } from '../api'
+import { PageLoader } from '../components/Spinner'
 
 export default function Login() {
   const navigate = useNavigate()
   const [form, setForm] = useState({ username: '', password: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [checkingSession, setCheckingSession] = useState(true)
+  const [sessionValid, setSessionValid] = useState(false)
 
-  if (isLoggedIn()) {
+  useEffect(() => {
+    const token = localStorage.getItem('adminToken')
+    if (!token) {
+      setCheckingSession(false)
+      return
+    }
+
+    let alive = true
+    authFetch('/api/auth/verify')
+      .then(res => {
+        if (!alive) return
+        if (res.ok) {
+          setSessionValid(true)
+        } else if (res.status === 401) {
+          logout()
+        }
+        setCheckingSession(false)
+      })
+      .catch(() => {
+        if (!alive) return
+        setCheckingSession(false)
+      })
+
+    return () => {
+      alive = false
+    }
+  }, [])
+
+  if (checkingSession) {
+    return <PageLoader />
+  }
+
+  if (sessionValid) {
     return <Navigate to="/admin/dashboard" replace />
   }
 

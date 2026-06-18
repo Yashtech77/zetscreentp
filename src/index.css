@@ -2631,57 +2631,6 @@ a.loc-contact-value:hover { color: var(--color-primary); }
   }
 }
 
-/* ==================== INSTAGRAM ==================== */
-.instagram-section {
-  padding: 80px 0;
-  background: var(--color-bg);
-}
-
-.instagram-widget-wrap {
-  display: flex;
-  justify-content: center;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  background: #fff;
-  border: 1px solid var(--color-border);
-  box-shadow: var(--shadow-sm);
-  margin-bottom: 24px;
-  min-height: 160px;
-}
-
-.instagram-widget-wrap iframe {
-  display: block;
-  width: 100% !important;
-  max-width: 480px;
-}
-
-.instagram-cta {
-  text-align: center;
-}
-
-.insta-follow-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 11px 28px;
-  border-radius: 50px;
-  border: 2px solid rgba(96, 195, 173, 0.35);
-  background: transparent;
-  color: rgba(96, 195, 173, 0.5);
-  font-size: 0.9rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.25s ease;
-  opacity: 1;
-}
-
-.insta-follow-btn:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
-  background: rgba(96, 195, 173, 0.06);
-  box-shadow: 0 0 0 4px rgba(96, 195, 173, 0.08);
-}
-
 /* ==================== FOOTER ==================== */
 .footer {
   background: var(--color-bg-dark);

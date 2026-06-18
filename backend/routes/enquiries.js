@@ -1,8 +1,10 @@
 const express = require('express');
 const authMiddleware = require('../middleware/auth');
 const db = require('../db');
+const { loadJsonData } = require('../utils/fallbackData');
 
 const router = express.Router();
+const enquiriesFallback = loadJsonData('enquiries.json', []);
 
 function rowToEnquiry(row) {
   return {
@@ -43,7 +45,7 @@ router.get('/', authMiddleware, async (req, res) => {
     res.json(rows.map(rowToEnquiry));
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Database error' });
+    res.json(enquiriesFallback);
   }
 });
 

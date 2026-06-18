@@ -4,6 +4,7 @@ const path = require('path');
 const multer = require('multer');
 const authMiddleware = require('../middleware/auth');
 const db = require('../db');
+const { loadSeedLocations } = require('../utils/fallbackData');
 
 const router = express.Router();
 const uploadsDir = path.join(__dirname, '../uploads');
@@ -68,11 +69,12 @@ async function buildLocation(loc, enabledBuildingsOnly = false) {
 router.get('/', async (req, res) => {
   try {
     const [locations] = await db.query('SELECT * FROM locations WHERE enabled = 1 ORDER BY display_order');
+    if (!locations.length) return res.json(loadSeedLocations({ enabledLocationsOnly: true, enabledBuildingsOnly: true }));
     const result = await Promise.all(locations.map(l => buildLocation(l, true)));
     res.json(result);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Database error' });
+    res.json(loadSeedLocations({ enabledLocationsOnly: true, enabledBuildingsOnly: true }));
   }
 });
 
@@ -80,11 +82,12 @@ router.get('/', async (req, res) => {
 router.get('/all', authMiddleware, async (req, res) => {
   try {
     const [locations] = await db.query('SELECT * FROM locations ORDER BY display_order');
+    if (!locations.length) return res.json(loadSeedLocations({ enabledLocationsOnly: false, enabledBuildingsOnly: false }));
     const result = await Promise.all(locations.map(l => buildLocation(l, false)));
     res.json(result);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Database error' });
+    res.json(loadSeedLocations({ enabledLocationsOnly: false, enabledBuildingsOnly: false }));
   }
 });
 

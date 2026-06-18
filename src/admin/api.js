@@ -1,6 +1,6 @@
 import API_BASE from '../config'
 
-const getToken = () => localStorage.getItem('adminToken');
+const getToken = () => localStorage.getItem('adminToken') || localStorage.getItem('token');
 
 export const authFetch = (url, options = {}) => {
   return fetch(`${API_BASE}${url}`, {
@@ -32,11 +32,13 @@ export const login = async (username, password) => {
   if (!res.ok) throw new Error('Invalid credentials');
   const data = await res.json();
   localStorage.setItem('adminToken', data.token);
+  localStorage.setItem('token', data.token);
   return data;
 };
 
 export const logout = () => {
   localStorage.removeItem('adminToken');
+  localStorage.removeItem('token');
 };
 
 export const isLoggedIn = () => !!getToken();

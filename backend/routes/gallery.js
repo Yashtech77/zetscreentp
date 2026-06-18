@@ -4,9 +4,11 @@ const path = require('path');
 const multer = require('multer');
 const authMiddleware = require('../middleware/auth');
 const db = require('../db');
+const { loadJsonData } = require('../utils/fallbackData');
 
 const router = express.Router();
 const uploadsDir = path.join(__dirname, '../uploads');
+const galleryFallback = loadJsonData('gallery.json', []);
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, uploadsDir),
@@ -20,10 +22,10 @@ const upload = multer({ storage, limits: { fileSize: 10 * 1024 * 1024 } });
 router.get('/', async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM gallery ORDER BY id');
-    res.json(rows);
+    res.json(rows.length ? rows : galleryFallback);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Database error' });
+    res.json(galleryFallback);
   }
 });
 

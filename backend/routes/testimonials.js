@@ -1,8 +1,10 @@
 const express = require('express');
 const authMiddleware = require('../middleware/auth');
 const db = require('../db');
+const { loadJsonData } = require('../utils/fallbackData');
 
 const router = express.Router();
+const testimonialsFallback = loadJsonData('testimonials.json', []);
 
 function rowToTestimonial(row) {
   return {
@@ -18,10 +20,10 @@ function rowToTestimonial(row) {
 router.get('/', async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM testimonials ORDER BY id');
-    res.json(rows.map(rowToTestimonial));
+    res.json(rows.length ? rows.map(rowToTestimonial) : testimonialsFallback);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Database error' });
+    res.json(testimonialsFallback);
   }
 });
 

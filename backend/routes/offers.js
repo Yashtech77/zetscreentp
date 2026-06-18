@@ -1,8 +1,10 @@
 const express = require('express');
 const authMiddleware = require('../middleware/auth');
 const db = require('../db');
+const { loadJsonData } = require('../utils/fallbackData');
 
 const router = express.Router();
+const offerFallback = loadJsonData('offers.json', { enabled: false });
 
 function rowToOffer(row) {
   return {
@@ -19,11 +21,11 @@ function rowToOffer(row) {
 router.get('/', async (req, res) => {
   try {
     const [rows] = await db.query('SELECT * FROM offers WHERE id = 1');
-    if (!rows.length) return res.json({ enabled: false });
+    if (!rows.length) return res.json(offerFallback);
     res.json(rowToOffer(rows[0]));
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Database error' });
+    res.json(offerFallback);
   }
 });
 

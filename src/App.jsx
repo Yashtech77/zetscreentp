@@ -3,7 +3,6 @@ import Navbar from './components/Navbar'
 import NewYearBanner from './components/NewYearBanner'
 import Hero from './components/Hero'
 import Gallery from './components/Gallery'
-import Instagram from './components/Instagram'
 import About from './components/About'
 import Testimonials from './components/Testimonials'
 import Location from './components/Location'
@@ -31,7 +30,6 @@ function MainSite() {
       <main>
         <Hero />
         <Location />
-        <Instagram />
         <Gallery />
         <About />
         <Testimonials />

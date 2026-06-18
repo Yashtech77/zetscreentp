@@ -1,22 +1,21 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import API_BASE from '../../config'
+import { authFetch } from '../api'
 import Spinner from '../components/Spinner'
+import { fetchJsonArray, fetchJsonObject } from '../../utils/fetchers'
 
 export default function Dashboard() {
   const [stats, setStats] = useState({ locations: 0, gallery: 0, testimonials: 0, enquiries: 0, offerEnabled: false })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    const authHeaders = { Authorization: `Bearer ${token}` }
-
     Promise.all([
-      fetch(`${API_BASE}/api/locations`).then(r => r.json()),
-      fetch(`${API_BASE}/api/gallery`).then(r => r.json()),
-      fetch(`${API_BASE}/api/testimonials`).then(r => r.json()),
-      fetch(`${API_BASE}/api/offers`).then(r => r.json()),
-      fetch(`${API_BASE}/api/enquiries`, { headers: authHeaders }).then(r => r.json()),
+      fetchJsonArray(`${API_BASE}/api/locations`),
+      fetchJsonArray(`${API_BASE}/api/gallery`),
+      fetchJsonArray(`${API_BASE}/api/testimonials`),
+      fetchJsonObject(`${API_BASE}/api/offers`, { enabled: false }),
+      authFetch('/api/enquiries').then(r => r.json().catch(() => [])),
     ]).then(([locations, gallery, testimonials, offers, enquiries]) => {
       setStats({
         locations: Array.isArray(locations) ? locations.length : 0,
